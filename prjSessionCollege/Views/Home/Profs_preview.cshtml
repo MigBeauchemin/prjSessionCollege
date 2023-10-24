@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profs Preview</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+    body {
+    background-image: url("/images/DeanOffice.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    }
+
+    h1 {
+    color: white;
+    font-size: 75px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000000;
+    }
+
+    .profContentBox {
+    background-color: rgba(128,128,128,0.8);
+    padding: 10px;
+    margin: auto;
+    border-radius: 10px;
+    width: 70%;
+    color: white;
+    }
+
+    #Copyright {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    color: white;
+    background-color: rgba(0,0,0,0.6);
+    padding: 5px;
+    font-size: 10px;
+    }
+
+    .formStyle {
+    background-color: rgba(128,128,128,0.8);
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    margin: auto;
+    }
+
+    .inputStyle {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    background-color: #fff;
+    border: 2px solid rgb(0,0,0,0);
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: #000;
+    }
+
+    .buttonStyle {
+    background-color: blue;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    </style>
+</head>
+<body>
+<div class="text-center">
+    <h1 class="display-3">PROFESSEURS</h1>
+
+</div>
+<div id="teacherBox" class="formStyle">
+    <div id="listeCours">
+        <label for="selectionCours">Mes Cours Attitrés</label>
+        <select size="5" id="selectionCours" class="inputStyle">
+            @* @foreach (var item in Model)
+            {
+            <option value="@item.CourseId">@item.CourseName</option>
+            } *@
+        </select>
+        <br>
+        <button id="confirmeCours" class="buttonStyle">Sélectioner</button>
+    </div>
+    <div id="infosEtudiants">
+        <h2>Étudiants Inscrits</h2>
+        <select id="selectionEtu" class="inputStyle">
+            @* @foreach (var item in Model)
+            {
+            <option value="@item.StudentId">@item.StudentName</option>
+            } *@
+        </select>
+        <br>
+        <button id="confimeEtu">Sélectioner</button>
+        <br>
+
+        <div id="insertionNotes">
+            <input type="text" placeholder="Mi-Session" id="midTerm" />
+            <button>Confirmer Note</button>
+            <br>
+            <input type="text" placeholder="Examen Final" id="finalExam" />
+            <button>Confirmer Note</button>
+            <br>
+            <input type="text" placeholder="Projet de Session" id="project" />
+            <button>Confirmer Note</button>
+        </div>
+
+        <hr />
+
+        <div id="tableauNotes">
+        </div>
+    </div>
+
+    </div>
+    <div id="Copyright">
+        Free image from Google Images
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#teacherBox").change(function () {
+                console.log("teacherBox changed: ", $(this).html());
+            });
+        });
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const courseStudentMap = {
+                "Course 1": ["Student 1", "Student 2"],
+                "Course 2": ["Student 3", "Student 4"],
+                // Add more for demonstration
+        };
+            const courseSelect = document.getElementById('selectionCours');
+            const studentSelect = document.getElementById('selectionEtu');
+
+            for (const course in courseStudentMap) {
+                const option = new Option(course, course);
+                courseSelect.add(option);
+            }
+
+            courseSelect.addEventListener('change', function () {
+                const selectedCourse = this.options[this.selectedIndex].text;
+                const students = courseStudentMap[selectedCourse] || [];
+
+                // Clear existing options
+                studentSelect.innerHTML = "";
+
+                // Populate new options
+                students.forEach((student) => {
+                    const option = new Option(student, student);
+                    studentSelect.add(option);
+                });
+            });
+            const exampleStudents = {"Student A", "Student B", "Student C"};
+                exampleStudents.forEach((student) => {
+                    const option = new Option(student, student);
+                    studentSelect.add(option);
+                });
+        });
+    </script>
+
+</body>
+</html>

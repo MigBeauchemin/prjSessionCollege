@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Professeurs";
+}
+
+<div class="text-center">
+    <h1 class="display-3">PROFESSEURS</h1>
+        
+</div>
+<div id="teacherBox" class="formStyle">
+    <div id="listeCours">
+        <label for="selectionCours">Mes Cours Attitrés</label>
+        <select size="5" id="selectionCours" class="inputStyle">
+            @foreach (var item in Model)
+            {
+                <option value="@item.CourseId">@item.CourseName</option>
+            }
+        </select>
+        <br>
+        <button id="confirmeCours" class="buttonStyle">Sélectioner</button>
+    </div>
+    <div id="infosEtudiants">
+        <h2>Étudiants Inscrits</h2>
+        <select id="selectionEtu">
+            @foreach (var item in Model)
+            {
+                <option value="@item.StudentId">@item.StudentName</option>
+            }
+        </select>
+        <br>
+        <button id="confimeEtu">Sélectioner</button>
+        <br>
+
+        <div id="insertionNotes">
+            <input type="text" placeholder="Mi-Session" id="midTerm" />
+                <button>Confirmer Note</button>
+            <br>
+                <input type="text" placeholder="Examen Final" id="finalExam" />
+                <button>Confirmer Note</button>
+            <br>
+            <input type="text" placeholder="Projet de Session" id="project" />
+                <button>Confirmer Note</button>
+        </div>
+
+        <hr />
+
+        <div id="tableauNotes">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Étudiant</th>
+                        <th>Mi-Session</th>
+                        <th>Examen Final</th>
+                        <th>Projet de Session</th>
+                        <th>Note Finale ou Sommaire</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.StudentName</td>
+                            <td>@item.MidTerm</td>
+                            <td>@item.FinalExam</td>
+                            <td>@item.Project</td>
+                            <td>@item.FinalGrade</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div id="Copyright">
+    Free image from Google Images
+    
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var elems = document.querySelectorAll("select");
+        var instances = M.FormSelect.init(elems, options);
+    });)
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const tbody = documentquerySelector("#tableauNotes tbody");
+
+        $.ajax({
+            type: "Get",
+            url: "/Home/GetStudentGrades",
+            data: { studentId: $("#selectionEtu").val() },
+            success: function (response) {
+                response.forEach((grade) => {
+                    const row = document.createElement("tr");
+                    const studentName = document.createElement("td");
+                    studentName.textContent = grade.StudentName;
+                    row.appendChild(studentName);
+
+                    const midTerm = document.createElement("td");
+                    midTerm.textContent = grade.MidTerm;
+                    row.appendChild(midTerm);
+
+                    const finalExam = document.createElement("td");
+                    finalExam.textContent = grade.FinalExam;
+                    row.appendChild(finalExam);
+
+                    const project = document.createElement("td");
+                    project.textContent = grade.Project;
+                    row.appendChild(project);
+
+                    const finalGrade = document.createElement("td");
+                    finalGrade.textContent = grade.FinalGrade;
+                    row.appendChild(finalGrade);
+
+                    tbody.appendChild(row);
+                })
+            },
+            error: function (response) {
+                alert("error : " + response.responseText);
+            }
+        });
+    })
+
+    $(function () {
+        $("#confirmeCours").click(function () {
+            $.ajax({
+                type: "Get",
+                url: "/Home/GetCourseStudents",
+                data: { courseId: $("#selectionCours").val() },
+                success: function (data) {
+                    console.log(data);
+                    $("#selectionEtu").html(data);
+                },
+                error: function (response) {
+                    alert("error : " + response.responseText);
+                }
+            });
+        });
+
+        $("#confimeEtu").click(function () {
+            $.ajax({
+                type: "Get",
+                url: "/Home/GetStudentGrades",
+                data: { studentId: $("#selectionEtu").val() },
+                success: function (data) {
+                    console.log(data);
+                    $("#tableauNotes").html(data);
+                },
+                error: function (response) {
+                    alert("error : " + response.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    body {
+        background-image: url("/images/DeanOffice.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    h1 {
+        color: white;
+        font-size: 75px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px #000000;
+    }
+    .profContentBox {
+        background-color: rgba(128,128,128,0.8);
+        padding: 10px;
+        margin: auto;
+        border-radius: 10px;
+        width: 70%;
+        color: white;
+    }
+    #Copyright {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        color: white;
+        background-color: rgba(0,0,0,0.6);
+        padding: 5px;
+        font-size: 10px;
+    }
+    .formStyle {
+        background-color: rgba(128,128,128,0.8);
+        padding: 20px;
+        border-radius: 10px;
+        width: 70%;
+        margin: auto;
+    }
+    .inputStyle {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        background-color: #fff;
+        border: 2px solid rgb(0,0,0,0);
+        box-sizing: border-box;
+        border-radius: 4px;
+        color: #000;
+    }
+    .buttonStyle {
+        background-color: blue;
+        color: #fff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+</style>

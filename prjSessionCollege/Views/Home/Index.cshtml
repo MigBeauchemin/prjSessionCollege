@@ -1,0 +1,196 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+
+    @if (Model.account != "")
+    {
+
+        <partial>@Html.Partial("_Cours")</partial>
+
+    }
+    else
+    {
+        <h1 class="display-4">COLLEGE - LOGIN PAGE</h1>
+        <p>Chers Étudiants ou Employés - Veuillez Entrez vos Informations de Connexion</p>   
+        <partial>@Html.Partial("_Connexion")</partial>
+    }
+  
+</div>
+
+
+<!-- ////////////////////////////////////// Affichage //////////////////////////////////////// -->
+
+<div class="container mt-5">
+    <div class="card mb-2">
+        <div class="tabs">
+            <a href="#" id="tabCours" class="btn btn-primary" style="width:125px">Cours</a>
+            <a href="#" id="tabEtudiant" class="btn btn-primary" style="width:125px">Étudiants</a>
+            <button class="btn btn-danger" style="width:125px;">Déconnexion</button>
+        </div>
+        <div class="grid-container"> 
+            <table class="table" id="data-table">
+                <div id="contentCours">
+                    <!-- //////////////////////////////////////Table Cours//////////////////////////////////////// -->
+                    <div id="CourseSemestersHeaders">
+                        <span>Session</span>
+                        <span>Departement</span>
+                        <span>Cours</span>
+                        <span>Professeur</span>
+                    </div>
+                    <div id="CourseSemesters">
+                        <table>
+
+                            @*    @foreach (var cours in Model.couseSemesters)
+                            {
+                            <tr data-ng-hide="@cours.Id">
+                            <td>@cours.Semester</td>
+                            <td>@cours.Department</td>
+                            <td>@cours.Course</td>
+                            <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
+
+                            </tr>
+                            }
+                            <tr></tr>*@
+
+                        </table>
+                    </div>
+                    <!-- //////////////////////////////////////Table Cours//////////////////////////////////////// -->
+
+                </div>
+                <div id="contentEtudiants">
+                    <!-- //////////////////////////////////////Table Etudiant//////////////////////////////////////// -->
+                    <div id="StudentsHeader">
+                        <span>Prénom</span>
+                        <span>Nom</span>
+                        <span>Téléphone</span>
+                        <span>Courriel</span>
+                    </div>
+                    <div id="Students">
+                        <table>
+
+                            @*        @foreach (var etudiant in Model.Person)
+                            {
+                            <tr data-ng-hide="@etudiant.id"data-ng-hide="@etudiant.role">
+
+                            <td>@etudiant.firstName</td>
+                            <td>@etudiant.lastName</td>
+                            <td>@etudiant.phone</td>
+                            <td>@etudiant.email</td>
+
+                            </tr>
+                            }
+                            <tr></tr>
+                            *@
+                        </table>
+                    </div>
+                    <!-- //////////////////////////////////////Table Etudiant//////////////////////////////////////// -->
+                </div>
+
+                <!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
+                <div id="AddStudentForm">
+                    @using (Html.BeginForm("UpdateStudent", "Home"))
+                    {
+
+                        <span>Prénom : </span>
+                        <input type="text" name="FirstName" placeholder="Prénom" />
+                        <br />
+
+                        <span>Nom : </span>
+                        <input type="text" name="LastName" placeholder="Nom" />
+                        <br />
+
+                        <span>Téléphone : </span>
+                        <input type="text" name="Phone" placeholder="Téléphone" />
+                        <br />
+
+                        <span>Courriel : </span>
+                        <input type="text" name="Email" placeholder="Courriel" />
+                        <br />
+
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+                    }
+                </div>
+                <!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ////////////////////////////////////// Scripts //////////////////////////////////////// -->
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            //prendre les informations pour la table Cours. 
+            $("#CourseSemesterGetAll").click(function () {
+            
+                $.ajax({
+                    type: "Get",
+                    url: "/Home/CourseSemesterGetAll",
+                    success: function (data) {
+                        console.log(data);
+                        $("#CourseSemester").html(data);
+                    },
+                    error: function (response) {
+                        alert("error : " + response.responseText);
+                    }
+                });                      
+            
+            });
+
+            //Valide si le email est bien ecrit.
+            $("#inputEmail").change(function () {
+
+                console.log("valeur : " + $(this).val());
+                console.log("index of :" + $(this).val().indexOf('@@'));
+
+                if (!$(this).val().includes('@@'))
+                {
+                    $(this).addClass("error");
+                    $(this).next().show(); // $(this).next.removeClass("hidden");
+                }
+                else
+                {
+                    $(this).removeClass("error");
+                    $(this).next().hide(); // $(this).next.addClass("hidden");
+                }
+               
+            });
+
+            $("ul li.test").html("test !");
+
+            //Affichage de la table Cours
+            $("#tabCours").click(function () {
+                $("#contentCours").show();
+                $("#CourseSemestersHeaders").show();
+
+                $("#contentEtudiants").hide();
+                $("#StudentsHeader").hide();
+                $("#AddStudentForm").hide();
+
+            });
+
+            //Affichage de la table Etudiant
+            $("#tabEtudiant").click(function() {
+                $("#contentCours").hide();
+                $("#CourseSemestersHeaders").hide(); 
+
+                $("#contentEtudiants").show();
+                $("#StudentsHeader").show();
+                $("#AddStudentForm").show();
+            });
+
+        });
+
+
+    </script>
+    }
+
+}
+    
+

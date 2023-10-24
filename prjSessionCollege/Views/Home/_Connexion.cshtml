@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <title>COLLEGE</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        body{
+            background-image: url("/images/Cambridge.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        #formLogin{
+            width: 300px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(128,128,128,0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input[type=text], input[type=password]{
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            background-color: #fff;
+            border: 2px solid rgb(0,0,0,0);
+            box-sizing: border-box;
+            border-radius: 4px;
+            color: #000;
+        }
+        button[type=submit]{
+            background-color: blue;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #Copyright{
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            color: white;
+            background-color: rgba(0,0,0,0.6);
+            padding: 5px;
+            font-size: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("AccountValidate", "Home", FormMethod.Post)){
+	<form id="formLogin">
+		<label for="Username">Utilisateur</label>
+		<input type="text" name="Username" id="Username">
+		<br>
+		<label for="Password">Mot de passe</label>
+		<input type="password" name="Password" id="Password">
+		<br>
+		<button type="submit">Connexion</button>
+	</form>
+     }
+
+	<div id="messageErreur"></div>
+
+@*    <script>
+        $(document).ready(function () {
+            $("#formLogin").submit(function (event) {
+                event.preventDefault();
+                const utilisateur = $("#Username").val();
+                const password = $("#Password").val();
+
+                
+                //$.ajax({
+                //    url: "/Home/AccountValidate",
+                //    type: "POST",
+                //    data: { Username: utilisateur, Password: password },
+                //    success: function (response) {
+                //        if (response.success) { 
+
+                //           window.location.href = "/Home/_Profs";
+                        
+                //        } else {                          
+                //            $("#messageErreur").text("Les Informations Entrées ne sont pas Valides - Vérifiez votre nom d'Utilisateur et Entrez votre Mot de Passe à nouveau.");
+                //            $("#messageErreur").css("color", "red");
+                //            $("#messageErreur").css("font-weight", "bold");
+                //            $("#Password").val("");
+                //        }
+                //    }
+                //});
+            });
+        });
+    </script>
+    <div id="Copyright">
+        By Diliff - Own work, 
+        <a href="https://creativecommons.org/licences/by-sa/3.0">CC BY-SA 3.0</a>, 
+        <a href="https://commons.wikimedia.org/w/index.php?curid=34183032">Link</a>
+    </div>*@
+	
+</body>
+
+</html>

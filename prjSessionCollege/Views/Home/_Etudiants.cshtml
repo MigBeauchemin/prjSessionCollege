@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div id="StudentsHeader">
+    <span>Prénom</span>
+    <span>Nom</span>
+    <span>Téléphone</span>
+    <span>Courriel</span>
+    </div>
+    <div id="Students">
+        <table>
+
+                @*        @foreach (var etudiant in Model.Person)
+                {
+                <tr data-ng-hide="@etudiant.id"data-ng-hide="@etudiant.role">
+
+                <td>@etudiant.firstName</td>
+                <td>@etudiant.lastName</td>
+                <td>@etudiant.phone</td>
+                <td>@etudiant.email</td>
+
+                </tr>
+                }
+                <tr></tr>
+                *@
+        </table>
+    </div>
+    <!-- //////////////////////////////////////Table Etudiant//////////////////////////////////////// -->
+</div>
+
+<!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
+    <div id="AddStudentForm">
+        @using (Html.BeginForm("UpdateStudent", "Home"))
+        {
+
+            <span>Prénom : </span>
+            <input type="text" name="FirstName" placeholder="Prénom" />
+            <br />
+
+            <span>Nom : </span>
+            <input type="text" name="LastName" placeholder="Nom" />
+            <br />
+
+            <span>Téléphone : </span>
+            <input type="text" name="Phone" placeholder="Téléphone" />
+            <br />
+
+            <span>Courriel : </span>
+            <input type="text" name="Email" placeholder="Courriel" />
+            <br />
+
+            <button type="submit" class="btn btn-success">Sauvegarder</button>
+        }
+    </div>
+    <!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
+    </table>
+</div>
