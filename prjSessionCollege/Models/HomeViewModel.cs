@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using prjSessionCollege.Controllers;
 using prjSessionCollege.Models;
 using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Net;
+using System.Text;
 using System.Text.Json;
 using prjSessionCollege.JSON;
 using prjSessionCollege.Objects;
@@ -18,7 +21,6 @@ namespace prjSessionCollege.Models
     public class HomeViewModel
     {
         private static HomeViewModel instance = null;
-
         public string account = "";
 
         public static HomeViewModel getInstance()
@@ -27,15 +29,14 @@ namespace prjSessionCollege.Models
             {
                 HomeViewModel.instance = new HomeViewModel();
             }
-
             return HomeViewModel.instance;
         }
 
-        private List<Person> dataPersons = new List<Person>();
-        private List<Semester> dataSemesters = new List<Semester>();
-        private List<Department> dataDepartments = new List<Department>();
+        public List<Person> dataPersons = new List<Person>();
+        public List<Semester> dataSemesters = new List<Semester>();
+        public List<Department> dataDepartments = new List<Department>();
         public List<CourseSemester> dataCourseSemester = new List<CourseSemester>();
-        private List<CourseSemesterStudent> dataCourseSemesterStudent = new List<CourseSemesterStudent>();
+        public List<CourseSemesterStudent> dataCourseSemesterStudent = new List<CourseSemesterStudent>();
 
         public string errorMessage = "";
 
@@ -56,19 +57,15 @@ namespace prjSessionCollege.Models
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-
                     string method = "AccountValidate";
-
                     string parameters = $"{{\"parameters\":[\"{Utilisateur}\",\"{Password}\"]}}";
 
                     HttpResponseMessage response = await client.GetAsync("College?method=" + method + "&parameters=" + parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
-
                         account = Utilisateur;
                         string responseSTR = await response.Content.ReadAsStringAsync();
-
                         string cleanResponse = "";
                         cleanResponse = responseSTR.Replace(@"\", "");
                         cleanResponse = cleanResponse.Substring(1, cleanResponse.Length - 2);
