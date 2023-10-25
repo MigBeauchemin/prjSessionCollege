@@ -1,60 +1,87 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<!-- //////////////////////////////////////Table Etudiant//////////////////////////////////////// -->
+<div class="grid-container">
+</div>
 
-<div id="StudentsHeader">
-    <span>Prénom</span>
-    <span>Nom</span>
-    <span>Téléphone</span>
-    <span>Courriel</span>
-    </div>
-    <div id="Students">
-        <table>
+<div class="grid-container">
+    
+    <table class="table" id="data-table">
 
-                @*        @foreach (var etudiant in Model.Person)
-                {
-                <tr data-ng-hide="@etudiant.id"data-ng-hide="@etudiant.role">
+        <tr>
+            <th hidden>Id</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Téléphone</th>
+            <th>Courriel</th>
+        </tr>
+    </table>
 
-                <td>@etudiant.firstName</td>
-                <td>@etudiant.lastName</td>
-                <td>@etudiant.phone</td>
-                <td>@etudiant.email</td>
+    <table>
 
-                </tr>
-                }
-                <tr></tr>
-                *@
-        </table>
-    </div>
-    <!-- //////////////////////////////////////Table Etudiant//////////////////////////////////////// -->
+            @foreach (var etudiant in Model.dataPersons)
+            {
+            <tr>
+                <td hidden>@etudiant.Id</td>
+                <td>@etudiant.FirstName</td>
+                <td>@etudiant.LastName</td>
+                <td>@etudiant.Phone</td>
+                <td>@etudiant.Email</td>
+
+            </tr>
+            }
+            <tr></tr>
+                
+    </table>
+
 </div>
 
 <!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
-    <div id="AddStudentForm">
-        @using (Html.BeginForm("UpdateStudent", "Home"))
-        {
+<div id="AddStudentForm">
+    <h2>Information de l'étudiant</h2>
+    @using (Html.BeginForm("UpdateStudent", "Home"))
+    {
 
-            <span>Prénom : </span>
-            <input type="text" name="FirstName" placeholder="Prénom" />
-            <br />
+        <span>Prénom : </span>
+        <input type="text" name="FirstName" placeholder="Prénom" />
+        <br />
 
-            <span>Nom : </span>
-            <input type="text" name="LastName" placeholder="Nom" />
-            <br />
+        <span>Nom : </span>
+        <input type="text" name="LastName" placeholder="Nom" />
+        <br />
 
-            <span>Téléphone : </span>
-            <input type="text" name="Phone" placeholder="Téléphone" />
-            <br />
+        <span>Téléphone : </span>
+        <input type="text" name="Phone" placeholder="Téléphone" />
+        <br />
 
-            <span>Courriel : </span>
-            <input type="text" name="Email" placeholder="Courriel" />
-            <br />
+        <span>Courriel : </span>
+        <input type="text" name="Email" placeholder="Courriel" />
+        <br />
 
-            <button type="submit" class="btn btn-success">Sauvegarder</button>
-        }
-    </div>
-    <!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
-    </table>
+        <button type="submit" class="btn btn-success">Sauvegarder</button>
+    }
 </div>
+
+<script>
+
+          //Valide si le email est bien ecrit.
+        $("#inputEmail").change(function () {
+
+            console.log("valeur : " + $(this).val());
+            console.log("index of :" + $(this).val().indexOf('@@'));
+
+            if (!$(this).val().includes('@@'))
+            {
+                $(this).addClass("error");
+                $(this).next().show(); // $(this).next.removeClass("hidden");
+            }
+            else
+            {
+                $(this).removeClass("error");
+                $(this).next().hide(); // $(this).next.addClass("hidden");
+            }
+               
+        });
+
+        $("ul li.test").html("test !");
+
+
+</script>
