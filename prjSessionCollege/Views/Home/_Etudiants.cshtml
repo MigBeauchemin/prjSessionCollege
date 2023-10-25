@@ -1,9 +1,6 @@
 ﻿<!-- //////////////////////////////////////Table Etudiant//////////////////////////////////////// -->
 <div class="grid-container">
-</div>
 
-<div class="grid-container">
-    
     <table class="table" id="data-table">
 
         <tr>
@@ -13,75 +10,190 @@
             <th>Téléphone</th>
             <th>Courriel</th>
         </tr>
-    </table>
 
-    <table>
-
-            @foreach (var etudiant in Model.dataPersons)
+        @foreach (var etudiant in Model.dataPersons)
             {
-            <tr>
-                <td hidden>@etudiant.Id</td>
-                <td>@etudiant.FirstName</td>
-                <td>@etudiant.LastName</td>
-                <td>@etudiant.Phone</td>
-                <td>@etudiant.Email</td>
+        <tr>
+            <td hidden>@etudiant.Id</td>
+            <td>@etudiant.FirstName</td>
+            <td>@etudiant.LastName</td>
+            <td>@etudiant.Phone</td>
+            <td>@etudiant.Email</td>
 
-            </tr>
+        </tr>
             }
-            <tr></tr>
-                
     </table>
 
 </div>
 
 <!-- //////////////////////////////////////Form Ajouter Etudiant//////////////////////////////////////// -->
 <div id="AddStudentForm">
-    <h2>Information de l'étudiant</h2>
+    <h2>Information de l'étudiant à Ajouter</h2>
     @using (Html.BeginForm("UpdateStudent", "Home"))
     {
+    <div class="formGroup">
+        <label for="FirstName">Prénom :</label>
+        <input type="text" name="FirstName" id="FirstName" placeholder="Prénom" />
+    </div>
 
-        <span>Prénom : </span>
-        <input type="text" name="FirstName" placeholder="Prénom" />
-        <br />
+    <div class="formGroup">
+        <label for="LastName">Nom :</label>
+        <input type="text" name="LastName" id="LastName" placeholder="Nom" />
+    </div>
 
-        <span>Nom : </span>
-        <input type="text" name="LastName" placeholder="Nom" />
-        <br />
+    <div class="formGroup">
+        <label for="Phone">Téléphone :</label>
+        <input type="text" name="Phone" id="Phone" placeholder="Téléphone" />
+    </div>
 
-        <span>Téléphone : </span>
-        <input type="text" name="Phone" placeholder="Téléphone" />
-        <br />
+    <div class="formGroup">
+        <label for="Email">Courriel :</label>
+        <input type="text" name="Email" id="Email" placeholder="Courriel" />
+    </div>
 
-        <span>Courriel : </span>
-        <input type="text" name="Email" placeholder="Courriel" />
-        <br />
-
-        <button type="submit" class="btn btn-success">Sauvegarder</button>
+    <button type="submit" class="btn btn-success">Sauvegarder</button>
     }
 </div>
 
 <script>
+    //Valide si le email est bien ecrit.
+    $("#inputEmail").change(function () {
 
-          //Valide si le email est bien ecrit.
-        $("#inputEmail").change(function () {
+        console.log("valeur : " + $(this).val());
+        console.log("index of :" + $(this).val().indexOf('@@'));
 
-            console.log("valeur : " + $(this).val());
-            console.log("index of :" + $(this).val().indexOf('@@'));
-
-            if (!$(this).val().includes('@@'))
-            {
-                $(this).addClass("error");
-                $(this).next().show(); // $(this).next.removeClass("hidden");
-            }
-            else
-            {
-                $(this).removeClass("error");
-                $(this).next().hide(); // $(this).next.addClass("hidden");
-            }
-               
-        });
-
-        $("ul li.test").html("test !");
-
+        if (!$(this).val().includes('@@')) {
+            $(this).addClass("error");
+            $(this).next().show(); // $(this).next.removeClass("hidden");
+        }
+        else {
+            $(this).removeClass("error");
+            $(this).next().hide(); // $(this).next.addClass("hidden");
+        }
+    });
+    $("ul li.test").html("test !");
 
 </script>
+<style>
+    body {
+        background-image: url("/images/Dorm.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    h1 {
+        color: white;
+        font-size: 75px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
+    h2 {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
+    th {
+        color: #000000;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px white;
+    }
+
+    #AddStudentForm h2 {
+        grid-column: 1 / -1;
+    }
+
+    .grid-container {
+        background-color: rgba(128,128,128,0.8);
+        padding: 10px;
+        margin: 10px auto;
+        border-radius: 10px;
+        width: 70%;
+        color: white;
+    }
+
+    .formGroup {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1px;
+    }
+
+    #AddStudentForm {
+        background-color: rgba(128,128,128,0.8);
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 2px;
+        padding: 2px;
+        margin: 1px auto;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        width: 70%;
+        color: white;
+    }
+
+        #AddStudentForm label, #AddStudentForm input {
+            margin-bottom: 2px;
+            border-radius: 4px;
+        }
+
+    .btn-success {
+        display: block;
+        margin: 5px auto;
+    }
+
+    #Copyright {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        color: white;
+        background-color: rgba(0,0,0,0.6);
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .formStyle {
+        background-color: rgba(128,128,128,0.8);
+        padding: 20px;
+        border-radius: 10px;
+        width: 70%;
+        margin: auto;
+    }
+
+    .inputStyle {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        background-color: #fff;
+        border: 2px solid rgb(0,0,0,0);
+        box-sizing: border-box;
+        border-radius: 4px;
+        color: #000;
+    }
+
+    .buttonStyle {
+        background-color: blue;
+        color: #fff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #LogoutBtn {
+        background-color: red;
+        padding: 1px 2px;
+        border: 2px solid rgb(0,0,0,0);
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        #LogoutBtn:hover {
+            background-color: rgb(124, 20, 17);
+            padding: 1px 2px;
+            border: 2px solid rgb(0,0,0,0);
+            border-radius: 4px;
+        }
+</style>

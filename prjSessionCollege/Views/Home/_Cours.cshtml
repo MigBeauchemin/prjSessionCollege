@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
+﻿<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
 <div class="grid-container">
     <table class="table" id="data-table">
 
@@ -14,9 +9,7 @@
             <th>Cours</th>
             <th>Professeur</th>
         </tr>
-    </table>
 
-    <table>
         @foreach (var cours in Model.dataCourseSemester)
         {
         <tr>
@@ -27,11 +20,9 @@
             <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
         </tr>
         }
-        <tr></tr>
-
     </table>
 </div>
-    
+
 <script>
     //document.addEventListener("DOMContentLoaded", function () {
     //    var elems = document.querySelectorAll("select");
@@ -118,20 +109,31 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+
     h1 {
         color: white;
         font-size: 75px;
         font-weight: bold;
         text-shadow: 2px 2px 4px #000000;
     }
-    .profContentBox {
+
+    th {
+        color: #000000;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px white;
+    }
+
+    .grid-container {
         background-color: rgba(128,128,128,0.8);
         padding: 10px;
-        margin: auto;
+        margin: 10px auto;
+        margin-bottom: 20px;
         border-radius: 10px;
         width: 70%;
         color: white;
     }
+
     #Copyright {
         position: fixed;
         bottom: 0;
@@ -141,6 +143,7 @@
         padding: 5px;
         font-size: 10px;
     }
+
     .formStyle {
         background-color: rgba(128,128,128,0.8);
         padding: 20px;
@@ -148,6 +151,7 @@
         width: 70%;
         margin: auto;
     }
+
     .inputStyle {
         width: 100%;
         padding: 12px 20px;
@@ -158,6 +162,7 @@
         border-radius: 4px;
         color: #000;
     }
+
     .buttonStyle {
         background-color: blue;
         color: #fff;
@@ -167,4 +172,18 @@
         cursor: pointer;
     }
 
+    #LogoutBtn {
+        background-color: red;
+        padding: 1px 2px;
+        border: 2px solid rgb(0,0,0,0);
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        #LogoutBtn:hover {
+            background-color: rgb(124, 20, 17);
+            padding: 1px 2px;
+            border: 2px solid rgb(0,0,0,0);
+            border-radius: 4px;
+        }
 </style>
