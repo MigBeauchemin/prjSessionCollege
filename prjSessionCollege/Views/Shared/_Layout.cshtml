@@ -6,7 +6,8 @@
     <title>@ViewData["Title"] - prjSessionCollege</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/prjSessionCollege.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/LayoutCss.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header>
@@ -25,8 +26,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item" id="LogoutBtn">
+                            <a class="nav-link text-dark" asp-area="">Déconnexion</a>
+                        </li>
                     </ul>
-                    <button id="logoutBtn" class="btn btn-danger" style="display:none;">Déconnexion</button>
+                   
                 </div>
             </div>
         </nav>
@@ -63,8 +67,7 @@
                     $("#logoutBtn").hide();
                     $("#teacherBox").hide();
                     $("#studentBox").hide();
-                } 
-               
+                }
             
                 $("#logoutBtn").click(function () {
                     $.ajax({

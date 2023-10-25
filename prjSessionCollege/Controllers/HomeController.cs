@@ -9,6 +9,7 @@ namespace prjSessionCollege.Controllers
 {
     public class HomeController : Controller
     {
+        private string errorMsg;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -16,22 +17,30 @@ namespace prjSessionCollege.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
-        public IActionResult Logout()
+        public IActionResult Index()
         {
-            HttpContext.Session.Clear();
-            return View("Connexion");
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            return View(viewModel);
         }
 
-        public IActionResult AccountValidate(IFormCollection form)
+        public IActionResult Logout()
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.account = "";
+            return View(viewModel);
+        }
+
+        public IActionResult AccountValidate(string Username, string Password)
+                            
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
 
-            viewModel.AccountValidate(form["Username"], form["Password"]).Wait();
+            viewModel.AccountValidate(Username, Password).Wait();
 
             if (viewModel.account == "")
             {
-                return PartialView("_Connexion",viewModel);
+                return PartialView("_Connexion", viewModel);
+
             }
             else 
             {
@@ -40,21 +49,13 @@ namespace prjSessionCollege.Controllers
 
         }
 
-        
-        public IActionResult Index()
-        {
-            HomeViewModel viewModel = HomeViewModel.getInstance();
-
-            
-            return View(viewModel);
-        }
-
         public IActionResult Privacy()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -65,28 +66,42 @@ namespace prjSessionCollege.Controllers
             HomeViewModel viewModel = HomeViewModel.getInstance();
             viewModel.CourseSemesterGetAll().Wait();
 
-            return RedirectToAction("Index", "Home");
+            return PartialView("_Cours", viewModel);
         }
 
-        public IActionResult PersonGetAll()
+        //public IActionResult PersonGetAll()
+        //{
+        //    HomeViewModel viewModel = HomeViewModel.getInstance();
+        //    viewModel.PersonGetAll().Wait();
+
+        //    return PartialView("_Etudiants",viewModel); 
+        //}
+
+        //public IActionResult AddStudent(IFormCollection form)
+        //{
+        //    HomeViewModel viewModel = HomeViewModel.getInstance();
+        //    viewModel.UpdatePerson(form["FirstName"], form["LastName"], form["Phone"], form["Email"], "Student").Wait();
+        //    viewModel.PersonGetAll().Wait();
+
+        //    return PartialView("_Etudiants", viewModel);
+        //}
+
+        public IActionResult ShowCours()
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
-            viewModel.PersonGetAll().Wait();
+            viewModel.CourseSemesterGetAll().Wait();
 
-            return RedirectToAction("Index", "Home");
+            return PartialView("_Cours", viewModel);
         }
 
-        public IActionResult AddStudent(IFormCollection form)
+        public IActionResult ShowEtudiants()
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
-            viewModel.UpdatePerson(form["FirstName"], form["LastName"], form["Phone"], form["Email"], "Student").Wait();
-            viewModel.PersonGetAll().Wait();
+            viewModel.PersonGetAll("Student").Wait();
 
-            return RedirectToAction("Index", "Home");
+            return PartialView("_Etudiants", viewModel);
         }
-        public IActionResult Profs_preview()
-        {
-            return View("Profs_preview");
-        }
+
+
     }
 }

@@ -12,14 +12,13 @@ using prjSessionCollege.Models;
 namespace prjSessionCollege.Objects
 {
     public class Person
+  
     {
-        public int id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string phone { get; set; }
-        public string email { get; set; }
-        public DateTime created { get; set; }
-        public string role { get; set; } // "Student" ou "Teacher"
-
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Phone { get; set; }
+    public string Email { get; set; }
     }
+
 }

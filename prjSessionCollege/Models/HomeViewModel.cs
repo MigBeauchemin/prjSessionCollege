@@ -11,8 +11,6 @@ using prjSessionCollege.JSON;
 using prjSessionCollege.Objects;
 
 
-
-
 namespace prjSessionCollege.Models
 {
     public class HomeViewModel
@@ -31,11 +29,11 @@ namespace prjSessionCollege.Models
             return HomeViewModel.instance;
         }
 
-        private List<Person> dataPersons = new List<Person>();
-        private List<Semester> dataSemesters = new List<Semester>();
-        private List<Department> dataDepartments = new List<Department>();
+        public List<Person> dataPersons = new List<Person>();
+        public List<Semester> dataSemesters = new List<Semester>();
+        public List<Department> dataDepartments = new List<Department>();
         public List<CourseSemester> dataCourseSemester = new List<CourseSemester>();
-        private List<CourseSemesterStudent> dataCourseSemesterStudent = new List<CourseSemesterStudent>();
+        public List<CourseSemesterStudent> dataCourseSemesterStudent = new List<CourseSemesterStudent>();
 
         public string errorMessage = "";
 
@@ -66,7 +64,7 @@ namespace prjSessionCollege.Models
                     if (response.IsSuccessStatusCode)
                     {
 
-                        account = Utilisateur;
+                        
                         string responseSTR = await response.Content.ReadAsStringAsync();
 
                         string cleanResponse = "";
@@ -78,20 +76,20 @@ namespace prjSessionCollege.Models
                         if (responseJSON.status == "success")
                         {
                             await CourseSemesterGetAll();
+                            account = Utilisateur;
                         }
                         else
                         {
-                            int z = 0;
-                            errorMessage = "B";
+                            //mauvais username ou password
+                            errorMessage = "Les Informations Entrées ne sont pas Valides - Vérifiez votre nom d'Utilisateur et Entrez votre Mot de Passe à nouveau.";
                         }
 
                         // Success
                     }
                     else
                     {
-                        int x = 0;
-                        errorMessage = "C";
-                        // Message a l'utilisateur
+                        //erreur(s) avec l'API
+                        errorMessage = "Resultat échec avec API";
                     }
                 }
 
@@ -193,7 +191,7 @@ namespace prjSessionCollege.Models
             }
         }
 
-        public async Task PersonGetAll (/*"Teacher" ou "Student"*/)
+        public async Task PersonGetAll (string role)
         {
 
             try
@@ -207,7 +205,7 @@ namespace prjSessionCollege.Models
 
                     //GET Method
                     string method = "PersonGetAll";
-                    string parameters = "{\"parameters\":\"[]\"}"; //"Teacher" ou "Student"
+                    string parameters = $"{{\"parameters\":[\"{role}\"]}}"; //"Teacher" ou "Student"
 
                     HttpResponseMessage response = await client.GetAsync("College?method=" + method + "&parameters=" + parameters);
 
@@ -222,7 +220,7 @@ namespace prjSessionCollege.Models
 
                         ResponseJSONPerson responseJSON = JsonSerializer.Deserialize<ResponseJSONPerson>(cleanResponse);
 
-                        this.dataPersons = responseJSON.data;
+                        dataPersons = responseJSON.data;
 
                         // Success
                     }
@@ -507,8 +505,6 @@ namespace prjSessionCollege.Models
             }
 
         }
-
-
 
 
 

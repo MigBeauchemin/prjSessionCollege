@@ -1,127 +1,106 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<!-- ////////////////////////////////////// Affichage //////////////////////////////////////// -->
+﻿<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
+<div class="grid-container">
+    <table class="table" id="data-table">
 
-<div class="container mt-5">
-    <div class="card mb-2">
-        <div class="tabs">
-            <a href="#" id="tabCours" class="btn btn-primary" style="width:125px">Cours</a>
-            <a href="#" id="tabEtudiant" class="btn btn-primary" style="width:125px">Étudiants</a>
-            <button class="btn btn-danger" style="width:125px;">Déconnexion</button>
-        </div>
-        <div class="grid-container"> 
-            <table class="table" id="data-table">
+        <tr>
+            <th hidden>Id</th>
+            <th>Session</th>
+            <th>Departement</th>
+            <th>Cours</th>
+            <th>Professeur</th>
+        </tr>
 
-                <tr>
-                    <th hidden>Id</th>
-                    <th>Session</th>
-                    <th>Departement</th>
-                    <th>Cours</th>
-                    <th>Professeur</th>
-                </tr>
-            </table>
-
-            <table>
-                @foreach (var cours in Model.dataCourseSemester)
-                {
-                <tr>
-                    <td hidden> @cours.Id</td>
-                    <td>@cours.Semester</td>
-                    <td>@cours.Department</td>
-                    <td>@cours.Course</td>
-                    <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
-                </tr>
-                }
-                <tr></tr>
-
-            </table>
-        </div>
-        
-
-        
-    </div>
-
+        @foreach (var cours in Model.dataCourseSemester)
+        {
+        <tr>
+            <td hidden> @cours.Id</td>
+            <td>@cours.Semester</td>
+            <td>@cours.Department</td>
+            <td>@cours.Course</td>
+            <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
+        </tr>
+        }
+    </table>
 </div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var elems = document.querySelectorAll("select");
-        var instances = M.FormSelect.init(elems, options);
-    });)
+    //document.addEventListener("DOMContentLoaded", function () {
+    //    var elems = document.querySelectorAll("select");
+    //    var instances = M.FormSelect.init(elems, options);
+    //});)
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        const tbody = documentquerySelector("#tableauNotes tbody");
+    //document.addEventListener("DOMContentLoaded", (event) => {
+    //    const tbody = documentquerySelector("#tableauNotes tbody");
 
-        $.ajax({
-            type: "Get",
-            url: "/Home/GetStudentGrades",
-            data: { studentId: $("#selectionEtu").val() },
-            success: function (response) {
-                response.forEach((grade) => {
-                    const row = document.createElement("tr");
-                    const studentName = document.createElement("td");
-                    studentName.textContent = grade.StudentName;
-                    row.appendChild(studentName);
+    //    $.ajax({
+    //        type: "Get",
+    //        url: "/Home/GetStudentGrades",
+    //        data: { studentId: $("#selectionEtu").val() },
+    //        success: function (response) {
+    //            response.forEach((grade) => {
+    //                const row = document.createElement("tr");
+    //                const studentName = document.createElement("td");
+    //                studentName.textContent = grade.StudentName;
+    //                row.appendChild(studentName);
 
-                    const midTerm = document.createElement("td");
-                    midTerm.textContent = grade.MidTerm;
-                    row.appendChild(midTerm);
+    //                const midTerm = document.createElement("td");
+    //                midTerm.textContent = grade.MidTerm;
+    //                row.appendChild(midTerm);
 
-                    const finalExam = document.createElement("td");
-                    finalExam.textContent = grade.FinalExam;
-                    row.appendChild(finalExam);
+    //                const finalExam = document.createElement("td");
+    //                finalExam.textContent = grade.FinalExam;
+    //                row.appendChild(finalExam);
 
-                    const project = document.createElement("td");
-                    project.textContent = grade.Project;
-                    row.appendChild(project);
+    //                const project = document.createElement("td");
+    //                project.textContent = grade.Project;
+    //                row.appendChild(project);
 
-                    const finalGrade = document.createElement("td");
-                    finalGrade.textContent = grade.FinalGrade;
-                    row.appendChild(finalGrade);
+    //                const finalGrade = document.createElement("td");
+    //                finalGrade.textContent = grade.FinalGrade;
+    //                row.appendChild(finalGrade);
 
-                    tbody.appendChild(row);
-                })
-            },
-            error: function (response) {
-                alert("error : " + response.responseText);
-            }
-        });
-    })
+    //                tbody.appendChild(row);
+    //            })
+    //        },
+    //        error: function (response) {
+    //            alert("error : " + response.responseText);
+    //        }
+    //    });
+    //})
 
-    $(function () {
-        $("#confirmeCours").click(function () {
-            $.ajax({
-                type: "Get",
-                url: "/Home/GetCourseStudents",
-                data: { courseId: $("#selectionCours").val() },
-                success: function (data) {
-                    console.log(data);
-                    $("#selectionEtu").html(data);
-                },
-                error: function (response) {
-                    alert("error : " + response.responseText);
-                }
-            });
-        });
+    //$(function () {
+    //    $("#confirmeCours").click(function () {
+    //        $.ajax({
+    //            type: "Get",
+    //            url: "/Home/GetCourseStudents",
+    //            data: { courseId: $("#selectionCours").val() },
+    //            success: function (data) {
+    //                console.log(data);
+    //                $("#selectionEtu").html(data);
+    //            },
+    //            error: function (response) {
+    //                alert("error : " + response.responseText);
+    //            }
+    //        });
+    //    });
 
-        $("#confimeEtu").click(function () {
-            $.ajax({
-                type: "Get",
-                url: "/Home/GetStudentGrades",
-                data: { studentId: $("#selectionEtu").val() },
-                success: function (data) {
-                    console.log(data);
-                    $("#tableauNotes").html(data);
-                },
-                error: function (response) {
-                    alert("error : " + response.responseText);
-                }
-            });
-        });
-    });
-   
+    //    $("#confimeEtu").click(function () {
+    //        $.ajax({
+    //            type: "Get",
+    //            url: "/Home/GetStudentGrades",
+    //            data: { studentId: $("#selectionEtu").val() },
+    //            success: function (data) {
+    //                console.log(data);
+    //                $("#tableauNotes").html(data);
+    //            },
+    //            error: function (response) {
+    //                alert("error : " + response.responseText);
+    //            }
+    //        });
+    //    });
+    //});
+    $(".BtnNav").show();
+    $("#LogoutBtn").show();
 </script>
 
 <style>
@@ -130,20 +109,31 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+
     h1 {
         color: white;
         font-size: 75px;
         font-weight: bold;
         text-shadow: 2px 2px 4px #000000;
     }
-    .profContentBox {
+
+    th {
+        color: #000000;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px white;
+    }
+
+    .grid-container {
         background-color: rgba(128,128,128,0.8);
         padding: 10px;
-        margin: auto;
+        margin: 10px auto;
+        margin-bottom: 20px;
         border-radius: 10px;
         width: 70%;
         color: white;
     }
+
     #Copyright {
         position: fixed;
         bottom: 0;
@@ -153,6 +143,7 @@
         padding: 5px;
         font-size: 10px;
     }
+
     .formStyle {
         background-color: rgba(128,128,128,0.8);
         padding: 20px;
@@ -160,6 +151,7 @@
         width: 70%;
         margin: auto;
     }
+
     .inputStyle {
         width: 100%;
         padding: 12px 20px;
@@ -170,6 +162,7 @@
         border-radius: 4px;
         color: #000;
     }
+
     .buttonStyle {
         background-color: blue;
         color: #fff;
@@ -179,93 +172,18 @@
         cursor: pointer;
     }
 
+    #LogoutBtn {
+        background-color: red;
+        padding: 1px 2px;
+        border: 2px solid rgb(0,0,0,0);
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        #LogoutBtn:hover {
+            background-color: rgb(124, 20, 17);
+            padding: 1px 2px;
+            border: 2px solid rgb(0,0,0,0);
+            border-radius: 4px;
+        }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-@*
-<div class="text-center">
-    <h1 class="display-3">PROFESSEURS</h1>
-        
-</div>
-<div id="teacherBox" class="formStyle">
-    <div id="listeCours">
-        <label for="selectionCours">Mes Cours Attitrés</label>
-        <select size="5" id="selectionCours" class="inputStyle">
-            @foreach (var item in Model.dataCourseSemester)
-            {
-                <option value="@item.CourseId">@item.CourseName</option>
-            }
-        </select>
-        <br>
-        <button id="confirmeCours" class="buttonStyle">Sélectioner</button>
-    </div>
-    <div id="infosEtudiants">
-        <h2>Étudiants Inscrits</h2>
-        <select id="selectionEtu">
-            @foreach (var item in Model)
-            {
-                <option value="@item.StudentId">@item.StudentName</option>
-            }
-        </select>
-        <br>
-        <button id="confimeEtu">Sélectioner</button>
-        <br>
-
-        <div id="insertionNotes">
-            <input type="text" placeholder="Mi-Session" id="midTerm" />
-                <button>Confirmer Note</button>
-            <br>
-                <input type="text" placeholder="Examen Final" id="finalExam" />
-                <button>Confirmer Note</button>
-            <br>
-            <input type="text" placeholder="Projet de Session" id="project" />
-                <button>Confirmer Note</button>
-        </div>
-
-        <hr />
-
-        <div id="tableauNotes">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Étudiant</th>
-                        <th>Mi-Session</th>
-                        <th>Examen Final</th>
-                        <th>Projet de Session</th>
-                        <th>Note Finale ou Sommaire</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.StudentName</td>
-                            <td>@item.MidTerm</td>
-                            <td>@item.FinalExam</td>
-                            <td>@item.Project</td>
-                            <td>@item.FinalGrade</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-</div>
-<div id="Copyright">
-    Free image from Google Images
-</div>    
-*@
