@@ -1,113 +1,187 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
+﻿<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
 <div class="grid-container">
-    <table class="table" id="data-table">
+    <div class="tableauListe">
+        <table class="table" id="dataTableCours">
 
-        <tr>
-            <th hidden>Id</th>
-            <th>Session</th>
-            <th>Departement</th>
-            <th>Cours</th>
-            <th>Professeur</th>
-        </tr>
-    </table>
+            <tr>
+                <th hidden id="TableCoursColon">Id</th>
+                <th id="TableCoursColon">Session</th>
+                <th id="TableCoursColon">Departement</th>
+                <th id="TableCoursColon">Cours</th>
+                <th id="TableCoursColon">Professeur</th>
+            </tr>
 
-    <table>
-        @foreach (var cours in Model.dataCourseSemester)
-        {
-        <tr>
-            <td hidden> @cours.Id</td>
-            <td>@cours.Semester</td>
-            <td>@cours.Department</td>
-            <td>@cours.Course</td>
-            <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
-        </tr>
-        }
-        <tr></tr>
+            @foreach (var cours in Model.dataCourseSemester)
+            {
+                <tr>
+                    <td hidden> @cours.Id</td>
+                    <td>@cours.Semester</td>
+                    <td>@cours.Department</td>
+                    <td>@cours.Course</td>
+                    <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="tableauResultat">
+        <div class="titleResultat">
+            <h4>Les Étudiants</h4>
+        </div>
+        <table class="table" id="resultTable">
+            <tr>
+                <th hidden>Id</th>
+                <th>Étudiant</th>
+                <th>Note</th>
+                <th>Supprimer</th>
+            </tr>
 
-    </table>
+            @foreach (var student in Model.dataCourseSemesterStudent)
+            {
+                <tr>
+                    <td hidden> @student.StudentId</td>
+                    <td>@student.FirstName @student.LastName</td>
+                    <td class="changerNote">@student.Grade</td>
+                    <td><button class="removeStudent" data="@student.StudentId" id="boutonRemoveStudent">Retirer</button></td>
+                </tr>
+            }
+        </table>
+        <div class="titleProfs">
+            <h4>Le Professeur du Cours</h4>
+        </div>
+        <table class="table" id="resultProf">
+            <tr>
+                <th hidden>Id</th>
+                <th>Professeur</th>
+                <th hidden>Ajouter</th>
+            </tr>
+
+            <!-- ERREUR AVEC LE FOREACH -->
+            @*  @foreach (var teacher in Model.dataCourse)
+            {
+            <tr>
+            <td hidden> @teacher.Id</td>
+            <td>@teacher.FirstName @teacher.LastName</td>
+            <td><button class="addTeacher" data="@teacher.TeacherId" id="boutonAddTeacher">Ajouter</button></td>
+            </tr>
+            }*@
+        </table>
+    </div>
+
 </div>
-    
+
+<!-- Tableau des étudiants du cours sélectionné -- Lorsqu'actif empêche le login -->
+
+
 <script>
-    //document.addEventListener("DOMContentLoaded", function () {
-    //    var elems = document.querySelectorAll("select");
-    //    var instances = M.FormSelect.init(elems, options);
-    //});)
+    //SCRIPT DU TRI -- FONCTIONNE
+    // Pour trier les colonnes du tableau
+    $(document).ready(function () {
+        let triCroissant = true;
 
-    //document.addEventListener("DOMContentLoaded", (event) => {
-    //    const tbody = documentquerySelector("#tableauNotes tbody");
+        $('th').click(function () {
+            const table = $('#dataTableCours');
+            const columnIndex = $(this).index();
 
-    //    $.ajax({
-    //        type: "Get",
-    //        url: "/Home/GetStudentGrades",
-    //        data: { studentId: $("#selectionEtu").val() },
-    //        success: function (response) {
-    //            response.forEach((grade) => {
-    //                const row = document.createElement("tr");
-    //                const studentName = document.createElement("td");
-    //                studentName.textContent = grade.StudentName;
-    //                row.appendChild(studentName);
+            $('th').each(function () {
+                $(this).text($(this).text().replace(' ↑', '').replace(' ↓', ''));
+            });
 
-    //                const midTerm = document.createElement("td");
-    //                midTerm.textContent = grade.MidTerm;
-    //                row.appendChild(midTerm);
+            // Recherche si la colonne est déjà triée
+            const rows = table.find('tbody tr').toArray();
 
-    //                const finalExam = document.createElement("td");
-    //                finalExam.textContent = grade.FinalExam;
-    //                row.appendChild(finalExam);
+            // Tri des lignes
+            rows.sort(function (a, b) {
+                const aValue = $(a).find('td').eq(columnIndex).text();
+                const bValue = $(b).find('td').eq(columnIndex).text();
+                return triCroissant ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            });
+            // Remplace les lignes dans le tableau
+            table.find('tbody').empty().append(rows);
 
-    //                const project = document.createElement("td");
-    //                project.textContent = grade.Project;
-    //                row.appendChild(project);
+            // Ajoute la flèche de tri
+            $(this).append(triCroissant ? ' ↑' : ' ↓');
 
-    //                const finalGrade = document.createElement("td");
-    //                finalGrade.textContent = grade.FinalGrade;
-    //                row.appendChild(finalGrade);
+            // Change le sens du tri
+            triCroissant = !triCroissant;
+        });
+    });
+    // FIN SCRIPT DU TRI -- FONCTIONNE NE PAS CHANGER
 
-    //                tbody.appendChild(row);
-    //            })
-    //        },
-    //        error: function (response) {
-    //            alert("error : " + response.responseText);
-    //        }
-    //    });
-    //})
 
-    //$(function () {
-    //    $("#confirmeCours").click(function () {
-    //        $.ajax({
-    //            type: "Get",
-    //            url: "/Home/GetCourseStudents",
-    //            data: { courseId: $("#selectionCours").val() },
-    //            success: function (data) {
-    //                console.log(data);
-    //                $("#selectionEtu").html(data);
-    //            },
-    //            error: function (response) {
-    //                alert("error : " + response.responseText);
-    //            }
-    //        });
-    //    });
+    //<-- Script pour afficher les détails du cours -->
+    // Ne fonctionne pas
 
-    //    $("#confimeEtu").click(function () {
-    //        $.ajax({
-    //            type: "Get",
-    //            url: "/Home/GetStudentGrades",
-    //            data: { studentId: $("#selectionEtu").val() },
-    //            success: function (data) {
-    //                console.log(data);
-    //                $("#tableauNotes").html(data);
-    //            },
-    //            error: function (response) {
-    //                alert("error : " + response.responseText);
-    //            }
-    //        });
-    //    });
-    //});
+    // $(document).ready(function () {
+    //     $("tbody tr").click(function () {
+    //         const clickedRow = $(this);
+    //         const courseId = clickedRow.find("td:first").text();
+
+    //         $ajax({
+    //         type: "GET",
+    //         url: "/Home/CourseSemester",
+    //         data: { courseId: courseId },
+    //         success: function (data) {
+    //             $("#detailsCours").html(data);
+    //         },
+    //         error: function (messageErreur) {
+    //             alert("error : " + response.responseText);
+    //         }
+    //         });
+
+    //         $ajax({
+    //         type: "GET",
+    //         url: "/Home/CourseSemesterStudents",
+    //         data: { courseId: courseId },
+    //         success: function (data) {
+    //             const tbody = $("#resultTable tbody");
+    //             $("#resultTable").html(data);
+    //             tbody.empty();
+
+    //             etudiantsData.forEach((etudiant) => {
+    //                 const row = $("<tr>");
+    //                 tr.append($("<td>${etudiant.FirstName etudiant.LastName}</td>");
+    //                 tr.append($("<td><input type="text" value="${etudiant.Grade}"></td>");
+    //                 tr.append($("<td><button class="removeStudent">Retirer</button></td>");
+
+    //                 tbody.append(row);
+    //             });
+
+    //             //Retirer un étudiant du cours click
+    //             $(".removeStudent").click(function () {
+    //                 const clickedRow = $(this).closest("tr");
+    //                 const studentId = clickedRow.find("td:first").text();
+
+    //                 $ajax({
+    //                     type: "GET",
+    //                     url: "/Home/RemoveStudentFromCourse",
+    //                     data: { studentId: studentId, courseId: courseId },
+    //                     success: function (etudiantsData) {
+    //                         const tbody = $("#grilleEtudiants tbody");
+    //                         $("#selectionEtu").html(etudiantsData);
+    //                         tbody.empty();
+
+    //                         etudiantsData.forEach((etudiant) => {
+    //                             const row = $("<tr>");
+    //                             tr.append($("<td>${etudiant.name}</td>");
+    //                             tr.append($("<td><input type="text" value="${etudiant.grade}"></td>");
+    //                             tr.append($("<td><button class="removeStudent">Retirer</button></td>");
+
+    //                             tbody.append(row);
+    //                         });
+    //                     },
+    //                     error: function (messageErreur) {
+    //                         alert("error : " + response.responseText);
+    //                     }
+    //                 });
+    //             });
+    //         },
+    //         error: function (messageErreur) {
+    //             alert("error : " + response.responseText);
+    //         }
+    //     });
+
+    // })
+
     $(".BtnNav").show();
     $("#LogoutBtn").show();
 </script>
@@ -118,20 +192,46 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+
     h1 {
         color: white;
         font-size: 75px;
         font-weight: bold;
         text-shadow: 2px 2px 4px #000000;
     }
-    .profContentBox {
+
+    tr:hover {
+        background-color: rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+
+    th {
+        color: #000000;
+        font-size: 20px;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px white;
+    }
+
+    .grid-container {
         background-color: rgba(128,128,128,0.8);
         padding: 10px;
-        margin: auto;
+        margin: 10px auto;
+        margin-bottom: 20px;
         border-radius: 10px;
         width: 70%;
         color: white;
     }
+
+    .detailCours {
+        background-color: rgba(128,128,128,0.8);
+        padding: 10px;
+        margin: 10px auto;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        width: 70%;
+        color: white;
+    }
+
     #Copyright {
         position: fixed;
         bottom: 0;
@@ -141,6 +241,7 @@
         padding: 5px;
         font-size: 10px;
     }
+
     .formStyle {
         background-color: rgba(128,128,128,0.8);
         padding: 20px;
@@ -148,6 +249,7 @@
         width: 70%;
         margin: auto;
     }
+
     .inputStyle {
         width: 100%;
         padding: 12px 20px;
@@ -158,6 +260,7 @@
         border-radius: 4px;
         color: #000;
     }
+
     .buttonStyle {
         background-color: blue;
         color: #fff;
@@ -167,4 +270,18 @@
         cursor: pointer;
     }
 
+    #LogoutBtn {
+        background-color: red;
+        padding: 1px 2px;
+        border: 2px solid rgb(0,0,0,0);
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        #LogoutBtn:hover {
+            background-color: rgb(124, 20, 17);
+            padding: 1px 2px;
+            border: 2px solid rgb(0,0,0,0);
+            border-radius: 4px;
+        }
 </style>
