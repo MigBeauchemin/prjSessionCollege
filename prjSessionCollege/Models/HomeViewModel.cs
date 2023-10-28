@@ -158,8 +158,8 @@ namespace prjSessionCollege.Models
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     //GET Method
-                    string method = "CoursSemesterStudentGetAll";
-                    string parameters = "{\"parameters\":[\"" + CourseSemesterId + "\"]\"}"; //aucun parametre
+                    string method = "CourseSemesterStudentGetAll";
+                    string parameters = $"{{\"parmeters\":[\"{CourseSemesterId}\"]\"}}"; //aucun parametre
 
                     HttpResponseMessage response = await client.GetAsync("College?method=" + method + "&parameters=" + parameters);
 
@@ -174,7 +174,7 @@ namespace prjSessionCollege.Models
 
                         ResponseJSONSemester responseJSON = JsonSerializer.Deserialize<ResponseJSONSemester>(cleanResponse);
 
-                        //this.dataCourseSemesterStudent = responseJSON.data;
+                        this.dataCourseSemesterStudent = responseJSON.data;
 
                         // Success
                     }
@@ -318,7 +318,6 @@ namespace prjSessionCollege.Models
                     {
 
                         string responseSTR = await response.Content.ReadAsStringAsync();
-
                         string cleanResponse = "";
                         cleanResponse = responseSTR.Replace(@"\", "");
                         cleanResponse = cleanResponse.Substring(1, cleanResponse.Length - 2);

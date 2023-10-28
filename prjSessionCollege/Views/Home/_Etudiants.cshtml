@@ -13,14 +13,14 @@
 
         @foreach (var etudiant in Model.dataPersons)
             {
-        <tr>
-            <td hidden>@etudiant.Id</td>
-            <td>@etudiant.FirstName</td>
-            <td>@etudiant.LastName</td>
-            <td>@etudiant.Phone</td>
-            <td>@etudiant.Email</td>
+                <tr>
+                    <td hidden>@etudiant.Id</td>
+                    <td>@etudiant.FirstName</td>
+                    <td>@etudiant.LastName</td>
+                    <td>@etudiant.Phone</td>
+                    <td>@etudiant.Email</td>
 
-        </tr>
+                </tr>
             }
     </table>
 
@@ -134,10 +134,10 @@
         color: white;
     }
 
-        #AddStudentForm label, #AddStudentForm input {
+    #AddStudentForm label, #AddStudentForm input {
             margin-bottom: 2px;
             border-radius: 4px;
-        }
+    }
 
     .btn-success {
         display: block;
