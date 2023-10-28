@@ -12,16 +12,18 @@
         </tr>
 
         @foreach (var etudiant in Model.dataPersons)
-            {
-        <tr>
-            <td hidden>@etudiant.Id</td>
-            <td>@etudiant.FirstName</td>
-            <td>@etudiant.LastName</td>
-            <td>@etudiant.Phone</td>
-            <td>@etudiant.Email</td>
 
-        </tr>
-            }
+        {
+            <tr>
+                <td hidden>@etudiant.Id</td>
+                <td>@etudiant.FirstName</td>
+                <td>@etudiant.LastName</td>
+                <td>@etudiant.Phone</td>
+                <td>@etudiant.Email</td>
+
+            </tr>
+        }
+
     </table>
 
 </div>
@@ -31,27 +33,28 @@
     <h2>Information de l'étudiant à Ajouter</h2>
     @using (Html.BeginForm("UpdateStudent", "Home"))
     {
-    <div class="formGroup">
-        <label for="FirstName">Prénom :</label>
-        <input type="text" name="FirstName" id="FirstName" placeholder="Prénom" />
-    </div>
 
-    <div class="formGroup">
-        <label for="LastName">Nom :</label>
-        <input type="text" name="LastName" id="LastName" placeholder="Nom" />
-    </div>
+        <div class="formGroup">
+            <label for="FirstName">Prénom :</label>
+            <input type="text" name="FirstName" id="FirstName" placeholder="Prénom" />
+        </div>
 
-    <div class="formGroup">
-        <label for="Phone">Téléphone :</label>
-        <input type="text" name="Phone" id="Phone" placeholder="Téléphone" />
-    </div>
+        <div class="formGroup">
+            <label for="LastName">Nom :</label>
+            <input type="text" name="LastName" id="LastName" placeholder="Nom" />
+        </div>
 
-    <div class="formGroup">
-        <label for="Email">Courriel :</label>
-        <input type="text" name="Email" id="Email" placeholder="Courriel" />
-    </div>
+        <div class="formGroup">
+            <label for="Phone">Téléphone :</label>
+            <input type="text" name="Phone" id="Phone" placeholder="Téléphone" />
+        </div>
 
-    <button type="submit" class="btn btn-success">Sauvegarder</button>
+        <div class="formGroup">
+            <label for="Email">Courriel :</label>
+            <input type="text" name="Email" id="Email" placeholder="Courriel" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Sauvegarder</button>
     }
 </div>
 
@@ -84,9 +87,11 @@
     h1 {
         color: white;
         font-size: 75px;
+
         font-weight: bold;
         text-shadow: 2px 2px 4px #000000;
     }
+
 
     h2 {
         color: white;
@@ -134,10 +139,10 @@
         color: white;
     }
 
-        #AddStudentForm label, #AddStudentForm input {
-            margin-bottom: 2px;
-            border-radius: 4px;
-        }
+    #AddStudentForm label, #AddStudentForm input {
+        margin-bottom: 2px;
+        border-radius: 4px;
+    }
 
     .btn-success {
         display: block;
@@ -161,6 +166,7 @@
         width: 70%;
         margin: auto;
     }
+
 
     .inputStyle {
         width: 100%;
@@ -190,10 +196,12 @@
         cursor: pointer;
     }
 
-        #LogoutBtn:hover {
-            background-color: rgb(124, 20, 17);
-            padding: 1px 2px;
-            border: 2px solid rgb(0,0,0,0);
-            border-radius: 4px;
-        }
+
+    #LogoutBtn:hover {
+        background-color: rgb(124, 20, 17);
+        padding: 1px 2px;
+        border: 2px solid rgb(0,0,0,0);
+        border-radius: 4px;
+    }
+
 </style>
