@@ -159,7 +159,7 @@ namespace prjSessionCollege.Models
 
                     //GET Method
                     string method = "CoursSemesterStudentGetAll";
-                    string parameters = "{\"parameters\":[\"" + CourseSemesterId + "\"]\"}"; //aucun parametre
+                    string parameters = "{\"parameters\":[\"" + CourseSemesterId + "\"]\"}"; 
 
                     HttpResponseMessage response = await client.GetAsync("College?method=" + method + "&parameters=" + parameters);
 

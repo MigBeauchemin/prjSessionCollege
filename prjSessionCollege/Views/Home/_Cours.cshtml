@@ -4,21 +4,27 @@
         <table class="table" id="dataTableCours">
 
             <tr>
-                <th hidden id="TableCoursColon">Id</th>
-                <th id="TableCoursColon">Session</th>
-                <th id="TableCoursColon">Departement</th>
-                <th id="TableCoursColon">Cours</th>
-                <th id="TableCoursColon">Professeur</th>
+                <th hidden class="TableCoursHead">Id</th>
+                <th hidden class="TableCoursHead">CourseId</th>
+                <th class="TableCoursHead">Session</th>
+                <th class="TableCoursHead">Departement</th>
+                <th class="TableCoursHead">Cours</th>
+                <th class="TableCoursHead">Professeur</th>
+                <th hidden class="TableCoursHead">Schedule</th>
+                <th hidden class="TableCoursHead">Location</th>
             </tr>
 
             @foreach (var cours in Model.dataCourseSemester)
             {
                 <tr>
-                    <td hidden> @cours.Id</td>
-                    <td>@cours.Semester</td>
-                    <td>@cours.Department</td>
-                    <td>@cours.Course</td>
-                    <td>@cours.TeacherFirstName @cours.TeacherLastName</td>
+                    <td hidden class="TableCoursItem"> @cours.Id</td>
+                    <td hidden class="TableCoursItem"> @cours.CourseId</td>
+                    <td class="TableCoursItem">@cours.Semester</td>
+                    <td class="TableCoursItem">@cours.Department</td>
+                    <td class="TableCoursItem">@cours.Course</td>
+                    <td class="TableCoursItem">@cours.TeacherFirstName @cours.TeacherLastName</td>
+                    <td hidden class="TableCoursItem"> @cours.Schedule</td>
+                    <td hidden class="TableCoursItem"> @cours.Location</td>
                 </tr>
             }
         </table>
@@ -30,6 +36,7 @@
         <table class="table" id="resultTable">
             <tr>
                 <th hidden>Id</th>
+                <th hidden>StudentId</th>
                 <th>Étudiant</th>
                 <th>Note</th>
                 <th>Supprimer</th>
@@ -38,6 +45,7 @@
             @foreach (var student in Model.dataCourseSemesterStudent)
             {
                 <tr>
+                    <td hidden> @student.Id</td>
                     <td hidden> @student.StudentId</td>
                     <td>@student.FirstName @student.LastName</td>
                     <td class="changerNote">@student.Grade</td>
@@ -52,37 +60,30 @@
             <tr>
                 <th hidden>Id</th>
                 <th>Professeur</th>
-                <th hidden>Ajouter</th>
+                <th></th>
+                <th>Horaire</th>
+                <th>Local</th>
+                 
             </tr>
 
-            <!-- ERREUR AVEC LE FOREACH -->
-            @*  @foreach (var teacher in Model.dataCourse)
-            {
-            <tr>
-            <td hidden> @teacher.Id</td>
-            <td>@teacher.FirstName @teacher.LastName</td>
-            <td><button class="addTeacher" data="@teacher.TeacherId" id="boutonAddTeacher">Ajouter</button></td>
-            </tr>
-            }*@
         </table>
     </div>
 
 </div>
 
-<!-- Tableau des étudiants du cours sélectionné -- Lorsqu'actif empêche le login -->
-
 
 <script>
-    //SCRIPT DU TRI -- FONCTIONNE
-    // Pour trier les colonnes du tableau
+    //SCRIPT DU TRI -- FONCTIONNE a moitié. On dirait qu'il enlève les nom de classe et les ids alors ils ne devient plus cliquable. Aussi le header tri et bouge. 
+   
+    // Pour trier les colonnes du tableau Cours
     $(document).ready(function () {
         let triCroissant = true;
 
-        $('th').click(function () {
+        $('#dataTableCours').on('click', '.TableCoursHead', function () {
             const table = $('#dataTableCours');
             const columnIndex = $(this).index();
 
-            $('th').each(function () {
+            $('.TableCoursHead').each(function () {
                 $(this).text($(this).text().replace(' ↑', '').replace(' ↓', ''));
             });
 
@@ -91,8 +92,8 @@
 
             // Tri des lignes
             rows.sort(function (a, b) {
-                const aValue = $(a).find('td').eq(columnIndex).text();
-                const bValue = $(b).find('td').eq(columnIndex).text();
+                const aValue = $(a).find('.TableCoursItem').eq(columnIndex).text();
+                const bValue = $(b).find('.TableCoursItem').eq(columnIndex).text();
                 return triCroissant ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
             });
             // Remplace les lignes dans le tableau
@@ -109,12 +110,52 @@
 
 
     //<-- Script pour afficher les détails du cours -->
-    // Ne fonctionne pas
+    // Le ajax Ne fonctionne pas
 
-    // $(document).ready(function () {
-    //     $("tbody tr").click(function () {
-    //         const clickedRow = $(this);
-    //         const courseId = clickedRow.find("td:first").text();
+    $(document).ready(function () {
+        $('#dataTableCours tbody tr').click(function () {
+            $('#dataTableCours tbody tr').removeClass('selected');
+            $(this).addClass('selected');
+
+            var rowData = $(this).find('td').map(function () {
+                return $(this).text();
+            }).get(); 
+
+            // Mettre à jour la table resultTable avec les données récupérées (pour les étudiants)
+            var courseId = rowData[1]; // courseId est la deuxième information 
+            $.ajax({
+                type: "GET",
+                url: "/Home/CourseSemesterStudent",
+                data: { courseId: courseId },
+                success: function (data) {
+                    var resultTable = $('#resultTable tbody');
+                    resultTable.empty();
+                    data.forEach(function (student) {
+                        var row = $('<tr>');
+                        row.append('<td hidden>' + student.Id + '</td>');
+                        row.append('<td hidden>' + student.StudentId + '</td>');
+                        row.append('<td>' + student.FirstName + ' ' + student.LastName + '</td>');
+                        row.append('<td class="changerNote">' + student.Grade + '</td>');
+                        row.append('<td><button class="removeStudent">Retirer</button></td>');
+                        resultTable.append(row);
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("Erreur : " + error);
+                }
+            });
+
+            // Mettre à jour la table resultProf avec les informations sur le professeur
+            var resultProf = $('#resultProf tbody');
+            resultProf.empty();
+            resultProf.append('<tr><th hidden >' + "Id" + ' </th><th>' + "Professeur" + '</th><th></th><th>' + "Horaire" + '</th><th>' + "Local" + '</th></tr>');
+            resultProf.append('<tr><td hidden>' + rowData[1] + '</td><td>' + rowData[5] + '</td><td><button class="addTeacher">Modifier Professeur</button></td><td>' + rowData[6] + '</td><td>' + rowData[7] + '</td></tr>');
+
+        });
+    });
+
+
 
     //         $ajax({
     //         type: "GET",
@@ -180,11 +221,34 @@
     //         }
     //     });
 
+
+
+    // // Code pour retirer un étudiant du cours
+    // $(".removeStudent").click(function () {
+    //     var clickedRow = $(this).closest("tr");
+    //     var studentId = clickedRow.find("td:nth-child(2)").text(); // Récupérer l'ID de l'étudiant
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "/Home/RemoveStudentFromCourse",
+    //         data: { studentId: studentId, courseId: courseId },
+    //         success: function (response) {
+    //             // Mettre à jour la table des étudiants après suppression
+    //             // (vous pouvez ajouter le code ici pour mettre à jour la table resultTable)
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error("Erreur : " + error);
+    //         }
+    //     });
+    // });
+
     // })
 
     $(".BtnNav").show();
     $("#LogoutBtn").show();
 </script>
+
+
+
 
 <style>
     body {
@@ -278,10 +342,15 @@
         cursor: pointer;
     }
 
-        #LogoutBtn:hover {
-            background-color: rgb(124, 20, 17);
-            padding: 1px 2px;
-            border: 2px solid rgb(0,0,0,0);
-            border-radius: 4px;
-        }
+    #LogoutBtn:hover {
+        background-color: rgb(124, 20, 17);
+        padding: 1px 2px;
+        border: 2px solid rgb(0,0,0,0);
+        border-radius: 4px;
+    }
+
+    .selected {
+        background-color: blue; /* Change la couleur de fond en bleu */
+        color: white; /* Change la couleur du texte en blanc, pour une meilleure lisibilité */
+    }
 </style>

@@ -102,6 +102,13 @@ namespace prjSessionCollege.Controllers
             return PartialView("_Etudiants", viewModel);
         }
 
+        public IActionResult ShowTeacher()
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.PersonGetAll("Teacher").Wait();
+
+            return PartialView("_Cours", viewModel);
+        }
 
     }
 }
