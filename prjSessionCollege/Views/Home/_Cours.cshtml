@@ -18,6 +18,7 @@
 
             @foreach (var cours in Model.dataCourseSemester)
             {
+
                 <tr>
                     <td hidden class="TableCoursItem"> @cours.Id</td>
                     <td hidden class="TableCoursItem"> @cours.CourseId</td>
@@ -28,6 +29,7 @@
                     <td hidden class="TableCoursItem"> @cours.Schedule</td>
                     <td hidden class="TableCoursItem"> @cours.Location</td>
                 </tr>
+
             }
         </table>
     </div>
@@ -51,6 +53,7 @@
             const columnIndex = $(this).index();
 
             $('.TableCoursHead').each(function () {
+
                 $(this).text($(this).text().replace(' ↑', '').replace(' ↓', ''));
             });
 
@@ -59,8 +62,10 @@
 
             // Tri des lignes
             rows.sort(function (a, b) {
+
                 const aValue = $(a).find('.TableCoursItem').eq(columnIndex).text();
                 const bValue = $(b).find('.TableCoursItem').eq(columnIndex).text();
+
                 return triCroissant ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
             });
             // Remplace les lignes dans le tableau
@@ -204,6 +209,7 @@
         cursor: pointer;
     }
 
+
     #LogoutBtn:hover {
         background-color: rgb(124, 20, 17);
         padding: 1px 2px;
@@ -215,4 +221,5 @@
         background-color: blue; 
         color: white; 
     }
+
 </style>
