@@ -1,7 +1,9 @@
 ﻿<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
 <div class="grid-container">
-    <div class="tableauListe">
-        <table class="table" id="dataTableCours">
+    <div style="height: 35vh;  overflow-y:scroll;" table{
+                 
+         }; class="tableauListe">
+        <table " class="table" id="dataTableCours">
 
             <tr>
                 <th hidden class="TableCoursHead">Id</th>
@@ -29,45 +31,10 @@
             }
         </table>
     </div>
-    <div class="tableauResultat">
-        <div class="titleResultat">
-            <h4>Les Étudiants</h4>
-        </div>
-        <table class="table" id="resultTable">
-            <tr>
-                <th hidden>Id</th>
-                <th hidden>StudentId</th>
-                <th>Étudiant</th>
-                <th>Note</th>
-                <th>Supprimer</th>
-            </tr>
-
-            @foreach (var student in Model.dataCourseSemesterStudent)
-            {
-                <tr>
-                    <td hidden> @student.Id</td>
-                    <td hidden> @student.StudentId</td>
-                    <td>@student.FirstName @student.LastName</td>
-                    <td class="changerNote">@student.Grade</td>
-                    <td><button class="removeStudent" data="@student.StudentId" id="boutonRemoveStudent">Retirer</button></td>
-                </tr>
-            }
-        </table>
-        <div class="titleProfs">
-            <h4>Le Professeur du Cours</h4>
-        </div>
-        <table class="table" id="resultProf">
-            <tr>
-                <th hidden>Id</th>
-                <th>Professeur</th>
-                <th></th>
-                <th>Horaire</th>
-                <th>Local</th>
-                 
-            </tr>
-
-        </table>
+    <div id="tableauResultat">
+        
     </div>
+    <div id=""></div>
 
 </div>
 
@@ -110,7 +77,6 @@
 
 
     //<-- Script pour afficher les détails du cours -->
-    // Le ajax Ne fonctionne pas
 
     $(document).ready(function () {
         $('#dataTableCours tbody tr').click(function () {
@@ -122,128 +88,22 @@
             }).get(); 
 
             // Mettre à jour la table resultTable avec les données récupérées (pour les étudiants)
-            var courseId = rowData[1]; // courseId est la deuxième information 
+            var courseId = rowData[0]; 
             $.ajax({
                 type: "GET",
                 url: "/Home/ShowStudentInCourse",
                 data: { courseId: courseId },
-                success: function (data) {
-                    var resultTable = $('#resultTable tbody');
-                    resultTable.empty();
-                    resultTable.append('<tr><th hidden >' + "Id" + ' </th><th hidden>' + "StudentId" + '</th><th>' + "Étudiant" + '</th><th>' + "Note" + '</th><th></th></tr>');
-                    if (Array.isArray(data)) {
-                        data.forEach(function (student) {
-                            var row = $('<tr>');
-                            row.append('<td hidden>' + student.Id + '</td>');
-                            row.append('<td hidden>' + student.StudentId + '</td>');
-                            row.append('<td>' + student.FirstName + ' ' + student.LastName + '</td>');
-                            row.append('<td class="changerNote">' + student.Grade + '</td>');
-                            row.append('<td><button class="removeStudent">Retirer</button></td>');
-                            resultTable.append(row);
-                        });
-                    } else {
-                        // Gérer le cas où la réponse n'est pas un tableau
-                        console.error("La réponse de la requête n'est pas un tableau.");
-                        // Vous pouvez ajouter du code ici pour gérer ce cas d'erreur spécifique.
-                    }
+                success: function (dataCourseSemesterStudent) {
+                    $('#tableauResultat').html(dataCourseSemesterStudent);
+                },
+                error: function (messageErreur) {
+                    alert("error : " + response.responseText);
+                }
+                   
             });
-
-            // Mettre à jour la table resultProf avec les informations sur le professeur
-            var resultProf = $('#resultProf tbody');
-            resultProf.empty();
-            resultProf.append('<tr><th hidden >' + "Id" + ' </th><th>' + "Professeur" + '</th><th></th><th>' + "Horaire" + '</th><th>' + "Local" + '</th></tr>');
-            resultProf.append('<tr><td hidden>' + rowData[1] + '</td><td>' + rowData[5] + '</td><td><button class="addTeacher">Modifier Professeur</button></td><td>' + rowData[6] + '</td><td>' + rowData[7] + '</td></tr>');
 
         });
     });
-
-
-
-    //         $ajax({
-    //         type: "GET",
-    //         url: "/Home/CourseSemester",
-    //         data: { courseId: courseId },
-    //         success: function (data) {
-    //             $("#detailsCours").html(data);
-    //         },
-    //         error: function (messageErreur) {
-    //             alert("error : " + response.responseText);
-    //         }
-    //         });
-
-    //         $ajax({
-    //         type: "GET",
-    //         url: "/Home/CourseSemesterStudents",
-    //         data: { courseId: courseId },
-    //         success: function (data) {
-    //             const tbody = $("#resultTable tbody");
-    //             $("#resultTable").html(data);
-    //             tbody.empty();
-
-    //             etudiantsData.forEach((etudiant) => {
-    //                 const row = $("<tr>");
-    //                 tr.append($("<td>${etudiant.FirstName etudiant.LastName}</td>");
-    //                 tr.append($("<td><input type="text" value="${etudiant.Grade}"></td>");
-    //                 tr.append($("<td><button class="removeStudent">Retirer</button></td>");
-
-    //                 tbody.append(row);
-    //             });
-
-    //             //Retirer un étudiant du cours click
-    //             $(".removeStudent").click(function () {
-    //                 const clickedRow = $(this).closest("tr");
-    //                 const studentId = clickedRow.find("td:first").text();
-
-    //                 $ajax({
-    //                     type: "GET",
-    //                     url: "/Home/RemoveStudentFromCourse",
-    //                     data: { studentId: studentId, courseId: courseId },
-    //                     success: function (etudiantsData) {
-    //                         const tbody = $("#grilleEtudiants tbody");
-    //                         $("#selectionEtu").html(etudiantsData);
-    //                         tbody.empty();
-
-    //                         etudiantsData.forEach((etudiant) => {
-    //                             const row = $("<tr>");
-    //                             tr.append($("<td>${etudiant.name}</td>");
-    //                             tr.append($("<td><input type="text" value="${etudiant.grade}"></td>");
-    //                             tr.append($("<td><button class="removeStudent">Retirer</button></td>");
-
-    //                             tbody.append(row);
-    //                         });
-    //                     },
-    //                     error: function (messageErreur) {
-    //                         alert("error : " + response.responseText);
-    //                     }
-    //                 });
-    //             });
-    //         },
-    //         error: function (messageErreur) {
-    //             alert("error : " + response.responseText);
-    //         }
-    //     });
-
-
-
-    // // Code pour retirer un étudiant du cours
-    // $(".removeStudent").click(function () {
-    //     var clickedRow = $(this).closest("tr");
-    //     var studentId = clickedRow.find("td:nth-child(2)").text(); // Récupérer l'ID de l'étudiant
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "/Home/RemoveStudentFromCourse",
-    //         data: { studentId: studentId, courseId: courseId },
-    //         success: function (response) {
-    //             // Mettre à jour la table des étudiants après suppression
-    //             // (vous pouvez ajouter le code ici pour mettre à jour la table resultTable)
-    //         },
-    //         error: function (xhr, status, error) {
-    //             console.error("Erreur : " + error);
-    //         }
-    //     });
-    // });
-
-    // })
 
     $(".BtnNav").show();
     $("#LogoutBtn").show();
@@ -352,7 +212,7 @@
     }
 
     .selected {
-        background-color: blue; /* Change la couleur de fond en bleu */
-        color: white; /* Change la couleur du texte en blanc, pour une meilleure lisibilité */
+        background-color: blue; 
+        color: white; 
     }
 </style>

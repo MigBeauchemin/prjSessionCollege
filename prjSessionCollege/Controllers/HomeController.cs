@@ -114,10 +114,19 @@ namespace prjSessionCollege.Controllers
         public IActionResult ShowStudentInCourse(int CourseId)
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
-            viewModel.CoursSemesterStudentGetAll(CourseId).Wait();
+            viewModel.CourseSemesterStudentGetAll(CourseId).Wait();
 
+            return PartialView("_Resultat", viewModel);
+
+        }
+
+        public IActionResult ChangeTeacher(int courseSemesterId , int teacherId)
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.CourseSemesterUpdateTeacher(courseSemesterId, teacherId).Wait();
+
+            //retour de message success ou erreur
             return PartialView("_Cours", viewModel);
-
         }
             
 
