@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Data.SqlClient;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using prjSessionCollege.Objects;
 
 namespace prjSessionCollege.Controllers
 {
@@ -109,6 +110,16 @@ namespace prjSessionCollege.Controllers
 
             return PartialView("_Cours", viewModel);
         }
+
+        public IActionResult ShowStudentInCourse(int CourseId)
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.CoursSemesterStudentGetAll(CourseId).Wait();
+
+            return PartialView("_Cours", viewModel);
+
+        }
+            
 
     }
 }
