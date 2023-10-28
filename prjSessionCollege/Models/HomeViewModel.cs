@@ -30,8 +30,6 @@ namespace prjSessionCollege.Models
         }
 
         public List<Person> dataPersons = new List<Person>();
-        public List<Semester> dataSemesters = new List<Semester>();
-        public List<Department> dataDepartments = new List<Department>();
         public List<CourseSemester> dataCourseSemester = new List<CourseSemester>();
         public List<CourseSemesterStudent> dataCourseSemesterStudent = new List<CourseSemesterStudent>();
 
@@ -146,7 +144,7 @@ namespace prjSessionCollege.Models
             }
         }
 
-        public async Task CoursSemesterStudentGetAll(int CourseSemesterId)
+        public async Task CourseSemesterStudentGetAll(int CourseSemesterId)
         {
             try
             {
@@ -158,8 +156,9 @@ namespace prjSessionCollege.Models
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     //GET Method
-                    string method = "CoursSemesterStudentGetAll";
-                    string parameters = "{\"parameters\":[\"" + CourseSemesterId + "\"]\"}"; 
+                   // string parameters = $"{{\"parameters\":[\"{Utilisateur}\",\"{Password}\"]}}";
+                    string method = "CourseSemesterStudentGetAll";
+                    string parameters = $"{{\"parameters\":[\"{CourseSemesterId}\"]}}"; 
 
                     HttpResponseMessage response = await client.GetAsync("College?method=" + method + "&parameters=" + parameters);
 
@@ -172,9 +171,9 @@ namespace prjSessionCollege.Models
                         cleanResponse = responseSTR.Replace(@"\", "");
                         cleanResponse = cleanResponse.Substring(1, cleanResponse.Length - 2);
 
-                        ResponseJSONSemester responseJSON = JsonSerializer.Deserialize<ResponseJSONSemester>(cleanResponse);
+                        ResponseJSONCourseSemesterStudent responseJSON = JsonSerializer.Deserialize<ResponseJSONCourseSemesterStudent>(cleanResponse);
 
-                        //this.dataCourseSemesterStudent = responseJSON.data;
+                        this.dataCourseSemesterStudent = responseJSON.data;
 
                         // Success
                     }

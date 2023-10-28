@@ -1,0 +1,60 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div style="height: 25vh;  overflow-y:scroll;" class="tableInfoEtudiant">
+<div class="titleResultat">
+    <h4>Les Étudiants</h4>
+</div>
+<table class="table" id="resultTable">
+    <tr>
+        <th hidden>Id</th>
+        <th hidden>StudentId</th>
+        <th>Étudiant</th>
+        <th>Note</th>
+        <th></th>
+    </tr>
+
+    @foreach (var student in Model.dataCourseSemesterStudent)
+    {
+        <tr>
+            <td hidden> @student.Id</td>
+            <td hidden> @student.StudentId</td>
+            <td>@student.FirstName @student.LastName</td>
+            <td class="changerNote">@student.Grade</td>
+            <td><button class="removeStudent" data="@student.StudentId" id="boutonRemoveStudent">Retirer</button></td>
+        </tr>
+    }
+</table>
+</div>
+
+<div style="height: 20vh;  overflow-y:scroll;" class="tableInfoProf">
+<div class="titleProfs">
+    <h4>Le Professeur du Cours</h4>
+</div>
+<table class="table" id="resultProf">
+    <tr>
+        <th hidden>Id</th>
+        <th>Professeur</th>
+        <th></th>
+        <th>Horaire</th>
+        <th>Local</th>
+
+    </tr>
+
+
+
+       
+    </table>
+</div>
+
+
+         @*     // Mettre à jour la table resultProf avec les informations sur le professeur
+        // var resultProf = $('#resultProf tbody');
+        // resultProf.empty();
+        // resultProf.append('
+<tr><th hidden>' + "Id" + ' </th><th>' + "Professeur" + '</th><th></th><th>' + "Horaire" + '</th><th>' + "Local" + '</th></tr>');
+        // resultProf.append('
+<tr><td hidden>' + rowData[1] + '</td><td>' + rowData[5] + '</td><td><button class="addTeacher">Modifier Professeur</button></td><td>' + rowData[6] + '</td><td>' + rowData[7] + '</td></tr>');
+ *@
