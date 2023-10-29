@@ -23,13 +23,13 @@
             <td hidden> @student.StudentId</td>
             <td>@student.FirstName @student.LastName</td>
             <td class="changerNote">@student.Grade</td>
-            <td><button class="removeStudent" data="@student.StudentId" id="boutonRemoveStudent">Retirer</button></td>
+            <td><button class="removeStudent" data="@student.StudentId" id="boutonRemoveStudent">Retirer du cours</button></td>
         </tr>
     }
 </table>
-</div>
+</div> 
 
-<div style="height: 20vh;  overflow-y:scroll;" class="tableInfoProf">
+<div style="height: 15vh;  overflow-y:scroll;" class="tableInfoProf">
 <div class="titleProfs">
     <h4>Le Professeur du Cours</h4>
 </div>
@@ -43,18 +43,29 @@
 
     </tr>
 
-
+        @foreach (var teacher in Model.dataCourseSemester) //if (Model.dataCourseSemester.Id == rowData[0] ou courseID){monter la table}
+        {
+            <tr>
+                <td hidden> @teacher.Id</td>
+                <td hidden> @teacher.TeacherId</td>
+                <td>@teacher.TeacherFirstName @teacher.TeacherLastName</td>
+                <td><button class="modifyTeacher" id="boutonModifyTeacher">Modifier</button></td>
+                <td>@teacher.Schedule</td>
+                <td>@teacher.Location</td>
+                
+            </tr>
+        } 
 
        
     </table>
 </div>
 
+ <script>
 
-         @*     // Mettre à jour la table resultProf avec les informations sur le professeur
-        // var resultProf = $('#resultProf tbody');
-        // resultProf.empty();
-        // resultProf.append('
-<tr><th hidden>' + "Id" + ' </th><th>' + "Professeur" + '</th><th></th><th>' + "Horaire" + '</th><th>' + "Local" + '</th></tr>');
-        // resultProf.append('
-<tr><td hidden>' + rowData[1] + '</td><td>' + rowData[5] + '</td><td><button class="addTeacher">Modifier Professeur</button></td><td>' + rowData[6] + '</td><td>' + rowData[7] + '</td></tr>');
- *@
+@*         //Mettre à jour la table resultProf avec les informations sur le professeur
+         var resultProf = $('#resultProf tbody');
+         resultProf.empty();
+         resultProf.append('<tr><th hidden>' + "Id" + ' </th><th>' + "Professeur" + '</th><th></th><th>' + "Horaire" + '</th><th>' + "Local" + '</th></tr>');
+         resultProf.append('<tr><td hidden>' + rowData[1] + '</td><td>' + rowData[5] + '</td><td><button class="addTeacher">Modifier Professeur</button></td><td>' + rowData[6] + '</td><td>' + rowData[7] + '</td></tr>');
+*@
+</script> 

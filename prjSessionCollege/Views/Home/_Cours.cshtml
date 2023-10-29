@@ -1,6 +1,6 @@
 ﻿<!-- ////////////////////////////////////// Table Cours //////////////////////////////////////// -->
 <div class="grid-container">
-    <div style="height: 35vh;  overflow-y:scroll;" table{
+    <div style="height: 30vh;  overflow-y:scroll;" table{
                  
          }; class="tableauListe">
         <table " class="table" id="dataTableCours">
@@ -33,10 +33,8 @@
             }
         </table>
     </div>
-    <div id="tableauResultat">
-        
-    </div>
-    <div id=""></div>
+    <div id="tableauResultat"></div>
+    
 
 </div>
 
@@ -84,7 +82,8 @@
     //<-- Script pour afficher les détails du cours -->
 
     $(document).ready(function () {
-        $('#dataTableCours tbody tr').click(function () {
+        $('#dataTableCours tbody tr').click(function () 
+        {
             $('#dataTableCours tbody tr').removeClass('selected');
             $(this).addClass('selected');
 
@@ -94,20 +93,22 @@
 
             // Mettre à jour la table resultTable avec les données récupérées (pour les étudiants)
             var courseId = rowData[0]; 
-            $.ajax({
+            $.ajax(
+            {
                 type: "GET",
                 url: "/Home/ShowStudentInCourse",
                 data: { courseId: courseId },
-                success: function (dataCourseSemesterStudent) {
+                success: function (dataCourseSemesterStudent) 
+                {
                     $('#tableauResultat').html(dataCourseSemesterStudent);
                 },
-                error: function (messageErreur) {
+                error: function (messageErreur) 
+                {
                     alert("error : " + response.responseText);
                 }
-                   
+            
             });
-
-        });
+         });
     });
 
     $(".BtnNav").show();
