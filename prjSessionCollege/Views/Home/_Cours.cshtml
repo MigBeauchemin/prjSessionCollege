@@ -25,6 +25,7 @@
                     <td class="TableCoursItem">@cours.Semester</td>
                     <td class="TableCoursItem">@cours.Department</td>
                     <td class="TableCoursItem">@cours.Course</td>
+                    <td hidden class="TableCoursItem">@cours.TeacherId</td>
                     <td class="TableCoursItem">@cours.TeacherFirstName @cours.TeacherLastName</td>
                     <td hidden class="TableCoursItem"> @cours.Schedule</td>
                     <td hidden class="TableCoursItem"> @cours.Location</td>
@@ -90,6 +91,8 @@
             var rowData = $(this).find('td').map(function () {
                 return $(this).text();
             }).get(); 
+
+            
 
             // Mettre à jour la table resultTable avec les données récupérées (pour les étudiants)
             var courseId = rowData[0]; 

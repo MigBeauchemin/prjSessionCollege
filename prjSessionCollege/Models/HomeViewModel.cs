@@ -32,6 +32,7 @@ namespace prjSessionCollege.Models
         public List<Person> dataPersons = new List<Person>();
         public List<CourseSemester> dataCourseSemester = new List<CourseSemester>();
         public List<CourseSemesterStudent> dataCourseSemesterStudent = new List<CourseSemesterStudent>();
+        public CourseSemester? teacherInfo = null; 
 
         public string errorMessage = "";
 
@@ -146,6 +147,16 @@ namespace prjSessionCollege.Models
 
         public async Task CourseSemesterStudentGetAll(int CourseSemesterId)
         {
+            foreach (var item in dataCourseSemester)
+            {
+                if (item.Id == CourseSemesterId)
+                {
+                    teacherInfo = item;
+                    break;
+                }
+            }
+                
+
             try
             {
 
@@ -236,14 +247,6 @@ namespace prjSessionCollege.Models
             }
 
         }
-
-        /* public List<CourseSemester> DataCourseSemesters
-         {
-             get
-             {
-                 return this.dataCourseSemesters.OrderBy(cs => cs.LastName).ToList();
-             }
-         }*/
 
 
         //////////////////////////////////////// POST METHODES  ////////////////////////////////////////

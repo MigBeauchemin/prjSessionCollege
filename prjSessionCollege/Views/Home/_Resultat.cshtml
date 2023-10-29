@@ -43,29 +43,17 @@
 
     </tr>
 
-        @foreach (var teacher in Model.dataCourseSemester) //if (Model.dataCourseSemester.Id == rowData[0] ou courseID){monter la table}
-        {
-            <tr>
-                <td hidden> @teacher.Id</td>
-                <td hidden> @teacher.TeacherId</td>
-                <td>@teacher.TeacherFirstName @teacher.TeacherLastName</td>
-                <td><button class="modifyTeacher" id="boutonModifyTeacher">Modifier</button></td>
-                <td>@teacher.Schedule</td>
-                <td>@teacher.Location</td>
+        <tr>
+            <td hidden> @Model.teacherInfo.Id</td>
+            <td hidden> @Model.teacherInfo.TeacherId</td>
+            <td>@Model.teacherInfo.TeacherFirstName @Model.teacherInfo.TeacherLastName</td>
+            <td><button class="modifyTeacher" id="boutonModifyTeacher">Modifier</button></td>
+            <td>@Model.teacherInfo.Schedule</td>
+            <td>@Model.teacherInfo.Location</td>
                 
-            </tr>
-        } 
+        </tr>
+       
 
        
     </table>
 </div>
-
- <script>
-
-@*         //Mettre à jour la table resultProf avec les informations sur le professeur
-         var resultProf = $('#resultProf tbody');
-         resultProf.empty();
-         resultProf.append('<tr><th hidden>' + "Id" + ' </th><th>' + "Professeur" + '</th><th></th><th>' + "Horaire" + '</th><th>' + "Local" + '</th></tr>');
-         resultProf.append('<tr><td hidden>' + rowData[1] + '</td><td>' + rowData[5] + '</td><td><button class="addTeacher">Modifier Professeur</button></td><td>' + rowData[6] + '</td><td>' + rowData[7] + '</td></tr>');
-*@
-</script> 

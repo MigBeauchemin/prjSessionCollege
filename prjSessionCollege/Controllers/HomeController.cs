@@ -70,23 +70,6 @@ namespace prjSessionCollege.Controllers
             return PartialView("_Cours", viewModel);
         }
 
-        //public IActionResult PersonGetAll()
-        //{
-        //    HomeViewModel viewModel = HomeViewModel.getInstance();
-        //    viewModel.PersonGetAll().Wait();
-
-        //    return PartialView("_Etudiants",viewModel); 
-        //}
-
-        //public IActionResult AddStudent(IFormCollection form)
-        //{
-        //    HomeViewModel viewModel = HomeViewModel.getInstance();
-        //    viewModel.UpdatePerson(form["FirstName"], form["LastName"], form["Phone"], form["Email"], "Student").Wait();
-        //    viewModel.PersonGetAll().Wait();
-
-        //    return PartialView("_Etudiants", viewModel);
-        //}
-
         public IActionResult ShowCours()
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
