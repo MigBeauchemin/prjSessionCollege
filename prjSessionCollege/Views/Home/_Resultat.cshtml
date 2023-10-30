@@ -142,32 +142,18 @@
 
     //SCRIPT POUR MODIFIER LA NOTE D'UN ÉTUDIANT
     $(document).ready(function () {
-        // When the grade textbox is clicked
         $(".gradeInput").click(function () {
-            // Make the textbox editable
             $(this).removeAttr("readonly");
-
-            // Show the "Edit" and "Cancel" buttons
             $(this).siblings(".editGrade, .cancelEdit").show();
         });
 
-        // When the "Edit" button is clicked
         $(".editGrade").click(function () {
-            // Make the textbox readonly again
             $(this).siblings(".gradeInput").attr("readonly", true);
-
-            // Hide the "Edit" and "Cancel" buttons
             $(this).siblings(".editGrade, .cancelEdit").hide();
-
-            // TODO: Add your code to update the grade in the database
         });
 
-        // When the "Cancel" button is clicked
         $(".cancelEdit").click(function () {
-            // Make the textbox readonly again
             $(this).siblings(".gradeInput").attr("readonly", true);
-
-            // Hide the "Edit" and "Cancel" buttons
             $(this).siblings(".editGrade, .cancelEdit").hide();
         });
     });
