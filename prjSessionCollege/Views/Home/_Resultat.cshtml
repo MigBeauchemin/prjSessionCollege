@@ -1,14 +1,12 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<div style="height: 25vh;  overflow-y:scroll;" class="tableInfoEtudiant">
+
+﻿<div style="height: 25vh;  overflow-y:scroll;" class="tableInfoEtudiant">
 <div class="titleResultat">
     <h4>Les Étudiants</h4>
 </div>
 <table class="table" id="resultTable">
     <tr>
+
+        @* <th hidden>CourseSemesterId</th> *@
         <th hidden>Id</th>
         <th hidden>StudentId</th>
         <th>Étudiant</th>
@@ -19,17 +17,28 @@
     @foreach (var student in Model.dataCourseSemesterStudent)
     {
         <tr>
+
+            @* <td hidden> @Model.CourseSemesterId</td> *@
             <td hidden> @student.Id</td>
             <td hidden> @student.StudentId</td>
             <td>@student.FirstName @student.LastName</td>
-            <td class="changerNote">@student.Grade</td>
-            <td><button class="removeStudent" data="@student.StudentId" id="boutonRemoveStudent">Retirer du cours</button></td>
+            <td class="changerNote">
+                <input type="text" class="gradeInput" value="@student.Grade" readonly />
+                <button class="editGrade" style="display: none;">Edit</button>
+                <button class="cancelEdit" style="display: none;">Cancel</button>
+            </td>
+            <td><button class="removeStudent" 
+                data @* -student *@ ="@student.StudentId" 
+                @* data-course="@Model.CourseSemesterId" *@ 
+                id="btnRemoveStudent">Retirer du cours</button>
+            </td>
         </tr>
     }
 </table>
 </div> 
 
-<div style="height: 15vh;  overflow-y:scroll;" class="tableInfoProf">
+
+<div class="tableInfoProf">
 <div class="titleProfs">
     <h4>Le Professeur du Cours</h4>
 </div>
@@ -41,19 +50,130 @@
         <th>Horaire</th>
         <th>Local</th>
 
-    </tr>
-
-        <tr>
-            <td hidden> @Model.teacherInfo.Id</td>
-            <td hidden> @Model.teacherInfo.TeacherId</td>
-            <td>@Model.teacherInfo.TeacherFirstName @Model.teacherInfo.TeacherLastName</td>
-            <td><button class="modifyTeacher" id="boutonModifyTeacher">Modifier</button></td>
-            <td>@Model.teacherInfo.Schedule</td>
-            <td>@Model.teacherInfo.Location</td>
+    </tr>     
+    <tr>
+        <td hidden> @Model.teacherInfo.Id</td>
+        <td hidden> @Model.teacherInfo.TeacherId</td>
+            <td>
+                <span class="teacherName">@Model.teacherInfo.TeacherFirstName @Model.teacherInfo.TeacherLastName</span>
+                <select class="dropdownTeacher" style="display:none;"></select>
+            </td>
+            <td>
+                <button class="modifyTeacher" id="boutonModifyTeacher">Modifier</button>
+                <button class="confirmButton" style="display:none;">Confirmer</button>
+            </td>
+        <td>@Model.teacherInfo.Schedule</td>
+        <td>@Model.teacherInfo.Location</td>
                 
-        </tr>
-       
-
+    </tr>        
        
     </table>
 </div>
+
+<script>
+    //SCRIPT POUR MODIFIER LE PROFESSEUR DU COURS
+    function updateCourseTeacher(courseSemesterId, newTeacherId, closestRow) {
+        $.ajax({
+            type: "POST",
+            url: "/HOME/ChangeTeacher",
+            data: { courseSemesterId: courseSemesterId, teacherId: newTeacherId },
+            success: function (response) {
+                console.log("success");
+                const newTeacherName = closestRow.find(".dropdownTeacher option:selected").text();
+                const targetTd = closestRow.find('.teacherName');
+                targetTd.text(newTeacherName);
+                targetTd.show();
+            },
+            error: function (messageErreur) {
+                console.log("error");
+                alert("error : " + messageErreur.responseText);
+            }
+        });
+    }
+
+    $("body").on("click", ".modifyTeacher", function () {
+        const closestRow = $(this).closest('tr');
+        const currentTeacherName = "@Model.teacherInfo.TeacherFirstName @Model.teacherInfo.TeacherLastName";
+        const currentTeacherId = "@Model.teacherInfo.TeacherId";
+        const currentTeacherOption = `<option value="${currentTeacherId}">${currentTeacherName}</option>`;
+        const newTeacher = $(".dropdownTeacher").html();
+
+        const dropdown = closestRow.find('.dropdownTeacher');
+        dropdown.html(currentTeacherOption + newTeacher);
+        closestRow.find('.teacherName').hide();
+        dropdown.show();
+        $(this).hide();
+        $(this).siblings(".confirmButton").show();
+    });
+
+    $("body").on("click", ".confirmButton", function () {
+        const closestRow = $(this).closest('tr');
+        const courseSemesterId = closestRow.find("td:eq(0)").text();
+        const newTeacherId = closestRow.find(".dropdownTeacher option:selected").val();
+        
+        updateCourseTeacher(courseSemesterId, newTeacherId, closestRow);
+        closestRow.find('.dropdownTeacher').hide();
+        $(this).hide();
+        $(this).siblings(".modifyTeacher").show();
+    });
+    //FIN DU SCRIPT POUR MODIFIER LE PROFESSEUR DU COURS
+
+    //SCRIPT POUR RETIRER UN ÉTUDIANT DU COURS -- NE FONCTIONNE PAS -- PROBLÈME AVEC L'AFFICHAGE DES TABLES ÉTUDIANTS ET PROFESSEURS, LES FAIT DISPARAÎTRE DANS RESULTAT
+    // function removeStudent(courseSemesterId, studentId, closestRow) {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/Home/CourseSemesterStudentDelete",
+    //         data: { CourseSemesterId: courseSemesterId, StudentId: studentId },
+    //         success: function (response) {        
+    //             closestRow.remove();
+    //         },
+    //         error: function (messageErreur) {
+    //             alert("error : " + messageErreur.responseText);
+    //         }
+    //     });
+    // }
+    // $("body").on("click", ".removeStudent", function () {
+    //     const closestRow = $(this).closest('tr');
+    //     const studentId = $(this).data("student");
+    //     const courseSemesterId = $(this).data("course");
+    //     const confirmRemove = window.confirm("Voulez-vous vraiment retirer cet étudiant du cours?");
+    //         if (confirmRemove) {               
+    //            removeStudent(courseSemesterId, studentId, closestRow);
+    //         }  
+    // });
+    //FIN DU SCRIPT POUR RETIRER UN ÉTUDIANT DU COURS
+
+    //SCRIPT POUR MODIFIER LA NOTE D'UN ÉTUDIANT
+    $(document).ready(function () {
+        $(".gradeInput").click(function () {
+            $(this).removeAttr("readonly");
+            $(this).siblings(".editGrade, .cancelEdit").show();
+        });
+
+        $(".editGrade").click(function () {
+            $(this).siblings(".gradeInput").attr("readonly", true);
+            $(this).siblings(".editGrade, .cancelEdit").hide();
+        });
+
+        $(".cancelEdit").click(function () {
+            $(this).siblings(".gradeInput").attr("readonly", true);
+            $(this).siblings(".editGrade, .cancelEdit").hide();
+        });
+    });
+
+
+
+</script>
+
+
+<style>
+    .tableInfoEtudiant{
+        margin-top: 5px;
+        padding: 5px;
+    }
+    .tableInfoProf{
+        margin-top: 5px;
+        padding: 5px;
+    }
+
+</style>

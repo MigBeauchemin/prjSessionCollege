@@ -167,9 +167,10 @@ namespace prjSessionCollege.Models
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     //GET Method
-                   // string parameters = $"{{\"parameters\":[\"{Utilisateur}\",\"{Password}\"]}}";
+
                     string method = "CourseSemesterStudentGetAll";
                     string parameters = $"{{\"parameters\":[\"{CourseSemesterId}\"]}}"; 
+
 
                     HttpResponseMessage response = await client.GetAsync("College?method=" + method + "&parameters=" + parameters);
 
@@ -248,14 +249,12 @@ namespace prjSessionCollege.Models
 
         }
 
-
         //////////////////////////////////////// POST METHODES  ////////////////////////////////////////
 
         public async Task CourseSemesterStudentInsert(int CourseSemesterId, int StudentId)
         {
             try
             {
-
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://localhost:7218");
@@ -320,7 +319,6 @@ namespace prjSessionCollege.Models
                     {
 
                         string responseSTR = await response.Content.ReadAsStringAsync();
-
                         string cleanResponse = "";
                         cleanResponse = responseSTR.Replace(@"\", "");
                         cleanResponse = cleanResponse.Substring(1, cleanResponse.Length - 2);
@@ -453,27 +451,21 @@ namespace prjSessionCollege.Models
 
         public async Task CourseSemesterStudentDelete( int CourseSemesterId, int PersonId)
         {
-
             try
             {
-
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://localhost:7218");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-
                     string method = "CourseSemesterStudentDelete";
-
                     string parameters = "{\"parameters\":[\"" + CourseSemesterId + "\",\"" + PersonId + "\"]}";
 
                     HttpResponseMessage response = await client.DeleteAsync("College?method=" + method + "&parameters=" + parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
-
-
                         string responseSTR = await response.Content.ReadAsStringAsync();
 
                         string cleanResponse = "";
@@ -507,8 +499,6 @@ namespace prjSessionCollege.Models
             }
 
         }
-
-
 
         public string ErrorMessage
         {

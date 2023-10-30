@@ -12,18 +12,16 @@
         </tr>
 
         @foreach (var etudiant in Model.dataPersons)
+            {
+                <tr>
+                    <td hidden>@etudiant.Id</td>
+                    <td>@etudiant.FirstName</td>
+                    <td>@etudiant.LastName</td>
+                    <td>@etudiant.Phone</td>
+                    <td>@etudiant.Email</td>
 
-        {
-            <tr>
-                <td hidden>@etudiant.Id</td>
-                <td>@etudiant.FirstName</td>
-                <td>@etudiant.LastName</td>
-                <td>@etudiant.Phone</td>
-                <td>@etudiant.Email</td>
-
-            </tr>
-        }
-
+                </tr>
+            }
     </table>
 
 </div>
