@@ -2,10 +2,11 @@
 {
     public class CourseSemesterStudent
     {
-        public int id { get; set; }
-        public int fkStudentId { get; set; }
-        public string? studentFirstName { get; set; }
-        public string? studentLastName { get; set; }
-        public string? grade { get; set; }
+        public int Id { get; set; }
+        public int StudentId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public double Grade { get; set; }
     }
 }
+

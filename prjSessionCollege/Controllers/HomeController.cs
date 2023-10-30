@@ -115,6 +115,7 @@ namespace prjSessionCollege.Controllers
             return PartialView("_Resultat", viewModel);
         }
 
+
         public IActionResult ChangeTeacher(int courseSemesterId, int teacherId)
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();

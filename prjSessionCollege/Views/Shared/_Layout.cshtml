@@ -30,7 +30,7 @@
                             <a class="nav-link text-dark" asp-area="">Déconnexion</a>
                         </li>
                     </ul>
-                   
+
                 </div>
             </div>
         </nav>
@@ -49,25 +49,43 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        function BackLogout()
-        {
-            $.ajax({
-                url:"/Home/Logout",
-                methode:"GET",
-                success:function(data)
-                {
-                    $(".Partial-Container").html(data);
-                }               
-            });
-        }
-        
-        $("#LogoutBtn").click(function () {   
-            BackLogout();
-        });
 
-        $("#LogoutBtn").hide();
+
+    <script src="~/prjSessionCollege.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            if (sessionStorage.getItem("userRole") == "Teacher") {
+                $("#logoutBtn").show();
+                $("#teacherBox").show();
+                $("#studentBox").hide();
+            }
+            else if (sessionStorage.getItem("userRole") == "Student") {
+                $("#logoutBtn").show();
+                $("#teacherBox").hide();
+                $("#studentBox").show();
+            }
+            else {
+                $("#logoutBtn").hide();
+                $("#teacherBox").hide();
+                $("#studentBox").hide();
+            }
+
+            $("#logoutBtn").click(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Home/Logout",
+                    success: function (data) {
+                        console.log(data);
+                        window.location.href = "/Home/Index";
+                    },
+                    error: function (response) {
+                        alert("error : " + response.responseText);
+                    }
+                });
+            });
+        });
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

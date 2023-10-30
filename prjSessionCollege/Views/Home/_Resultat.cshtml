@@ -1,9 +1,11 @@
+
 ﻿<div style="height: 25vh;  overflow-y:scroll;" class="tableInfoEtudiant">
 <div class="titleResultat">
     <h4>Les Étudiants</h4>
 </div>
 <table class="table" id="resultTable">
     <tr>
+
         @* <th hidden>CourseSemesterId</th> *@
         <th hidden>Id</th>
         <th hidden>StudentId</th>
@@ -15,6 +17,7 @@
     @foreach (var student in Model.dataCourseSemesterStudent)
     {
         <tr>
+
             @* <td hidden> @Model.CourseSemesterId</td> *@
             <td hidden> @student.Id</td>
             <td hidden> @student.StudentId</td>
@@ -34,6 +37,7 @@
 </table>
 </div> 
 
+
 <div class="tableInfoProf">
 <div class="titleProfs">
     <h4>Le Professeur du Cours</h4>
@@ -46,8 +50,7 @@
         <th>Horaire</th>
         <th>Local</th>
 
-    </tr>
-        
+    </tr>     
     <tr>
         <td hidden> @Model.teacherInfo.Id</td>
         <td hidden> @Model.teacherInfo.TeacherId</td>
