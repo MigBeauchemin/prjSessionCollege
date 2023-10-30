@@ -238,22 +238,12 @@ namespace prjSessionCollege.Models
 
         }
 
-        /* public List<CourseSemester> DataCourseSemesters
-         {
-             get
-             {
-                 return this.dataCourseSemesters.OrderBy(cs => cs.LastName).ToList();
-             }
-         }*/
-
-
         //////////////////////////////////////// POST METHODES  ////////////////////////////////////////
 
         public async Task CourseSemesterStudentInsert(int CourseSemesterId, int StudentId)
         {
             try
             {
-
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://localhost:7218");
@@ -450,27 +440,21 @@ namespace prjSessionCollege.Models
 
         public async Task CourseSemesterStudentDelete( int CourseSemesterId, int PersonId)
         {
-
             try
             {
-
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://localhost:7218");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-
                     string method = "CourseSemesterStudentDelete";
-
                     string parameters = "{\"parameters\":[\"" + CourseSemesterId + "\",\"" + PersonId + "\"]}";
 
                     HttpResponseMessage response = await client.DeleteAsync("College?method=" + method + "&parameters=" + parameters);
 
                     if (response.IsSuccessStatusCode)
                     {
-
-
                         string responseSTR = await response.Content.ReadAsStringAsync();
 
                         string cleanResponse = "";
@@ -504,8 +488,6 @@ namespace prjSessionCollege.Models
             }
 
         }
-
-
 
         public string ErrorMessage
         {

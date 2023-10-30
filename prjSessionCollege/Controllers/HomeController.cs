@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using prjSessionCollege.Models;
-using System.Diagnostics;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using prjSessionCollege.Objects;
 
 namespace prjSessionCollege.Controllers
 {
@@ -31,10 +29,9 @@ namespace prjSessionCollege.Controllers
         }
 
         public IActionResult AccountValidate(string Username, string Password)
-                            
+
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
-
             viewModel.AccountValidate(Username, Password).Wait();
 
             if (viewModel.account == "")
@@ -42,11 +39,10 @@ namespace prjSessionCollege.Controllers
                 return PartialView("_Connexion", viewModel);
 
             }
-            else 
+            else
             {
                 return PartialView("_Cours", viewModel);
             }
-
         }
 
         public IActionResult Privacy()
@@ -69,23 +65,6 @@ namespace prjSessionCollege.Controllers
             return PartialView("_Cours", viewModel);
         }
 
-        //public IActionResult PersonGetAll()
-        //{
-        //    HomeViewModel viewModel = HomeViewModel.getInstance();
-        //    viewModel.PersonGetAll().Wait();
-
-        //    return PartialView("_Etudiants",viewModel); 
-        //}
-
-        //public IActionResult AddStudent(IFormCollection form)
-        //{
-        //    HomeViewModel viewModel = HomeViewModel.getInstance();
-        //    viewModel.UpdatePerson(form["FirstName"], form["LastName"], form["Phone"], form["Email"], "Student").Wait();
-        //    viewModel.PersonGetAll().Wait();
-
-        //    return PartialView("_Etudiants", viewModel);
-        //}
-
         public IActionResult ShowCours()
         {
             HomeViewModel viewModel = HomeViewModel.getInstance();
@@ -102,6 +81,47 @@ namespace prjSessionCollege.Controllers
             return PartialView("_Etudiants", viewModel);
         }
 
+        [HttpPost]
+        public IActionResult CourseSemesterStudentDelete(int CourseSemesterId, int PersonId)
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.CourseSemesterStudentDelete(CourseSemesterId, PersonId).Wait();
 
+            return PartialView("_Resultat", viewModel);
+        }
+
+        public IActionResult ShowTeacher()
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.PersonGetAll("Teacher").Wait();
+
+            return PartialView("_Cours", viewModel);
+        }
+
+        public IActionResult ShowStudentInCourse(int CourseId)
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.CourseSemesterStudentGetAll(CourseId).Wait();
+
+            return PartialView("_Resultat", viewModel);
+
+        }
+
+        public IActionResult GetCourseTeacher()
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.PersonGetAll("Teacher").Wait();
+
+            return PartialView("_Resultat", viewModel);
+        }
+
+        public IActionResult ChangeTeacher(int courseSemesterId, int teacherId)
+        {
+            HomeViewModel viewModel = HomeViewModel.getInstance();
+            viewModel.CourseSemesterUpdateTeacher(courseSemesterId, teacherId).Wait();
+
+            //retour de message success ou erreur
+            return PartialView("_Resultat", viewModel);
+        }
     }
 }
